@@ -1203,7 +1203,7 @@
       if (result.result !== 'success') {
         btn.disabled = false;
         status.innerHTML = '';
-        alert('系統忙碌，請稍後再試。');
+        alert('Supabase 錯誤：' + JSON.stringify(result));
         return;
       }
 
@@ -1230,7 +1230,7 @@
     } catch(e) {
       btn.disabled = false;
       status.innerHTML = '';
-      alert('連線失敗，請稍後再試。');
+      alert('連線失敗：' + e.message);
     }
   }
 
@@ -1297,7 +1297,7 @@
       if (result.result !== 'success') {
         btn.disabled = false;
         status.innerHTML = '';
-        alert('系統忙碌，請稍後再試。');
+        alert('Supabase 錯誤：' + JSON.stringify(result));
         return;
       }
 
