@@ -756,8 +756,8 @@
     <!-- Step 4: 轉帳資訊 -->
     <div class="step" id="step-4">
       <div class="step-number">3</div>
-      <div class="question">請完成轉帳</div>
-      <div class="question-desc">請依以下資訊完成轉帳後再進行下一步</div>
+      <div class="question">前往付款</div>
+      <div class="question-desc">點擊下方按鈕前往綠界付款，將產生 ATM 虛擬帳號，請於 3 天內完成轉帳</div>
       <div class="countdown-bar" id="countdown-bar">
         <span style="font-size:16px;">⏱</span>
         <span>付款時限</span>
@@ -765,49 +765,20 @@
         <div class="countdown-track"><div class="countdown-fill" id="countdown-fill" style="width:100%"></div></div>
       </div>
       <div class="amount-display">
-        <span class="amount-label">應匯金額（<span id="amt-people">1</span> 人 × NT$520）</span>
+        <span class="amount-label">付款金額（<span id="amt-people">1</span> 人 × NT$520）</span>
         <span class="amount-value">NT$<span id="amt-total">520</span></span>
       </div>
-      <div class="bank-card">
-        <div class="bank-label">收款銀行</div>
-        <div class="bank-name">LINE BANK 連線商業銀行（824）</div>
-        <div class="bank-label" style="margin-top:0.5rem">帳號</div>
-        <div class="account-row">
-          <span class="account-num">111017608345</span>
-          <button class="copy-btn" id="copy-btn" onclick="copyAccount()">複製</button>
-        </div>
-      </div>
-      <button class="next-btn" onclick="goTo(5)">
-        已完成轉帳，繼續
+      <div style="height:1rem"></div>
+      <button class="next-btn" id="pay-btn" onclick="goToECPay()">
+        前往綠界付款
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </button>
-    </div>
-
-    <!-- Step 5: 轉帳確認 + 後五碼 -->
-    <div class="step" id="step-5">
-      <div class="step-number">4</div>
-      <div class="question">請確認轉帳狀態 *</div>
-      <div class="question-desc">請確認已完成轉帳方可繼續報名</div>
-      <div class="confirm-row" id="confirm-yes" onclick="selectConfirm()">
-        <div class="check-circle">✓</div>
-        是，我已完成轉帳
-      </div>
-      <span class="error-msg" id="err-confirm">請確認已完成轉帳</span>
-
-      <div style="height:1.5rem"></div>
-      <div class="question" style="font-size:18px;margin-bottom:0.5rem">請填寫轉帳後五碼 *</div>
-      <div class="question-desc" style="margin-bottom:1rem">請輸入您匯款帳號的後五碼</div>
-      <input class="text-input" type="text" id="transfer-code" maxlength="5" placeholder="例：12345" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-      <span class="error-msg" id="err-code">請填寫正確的 5 碼數字</span>
-      <button class="next-btn" onclick="nextFromConfirm()">
-        確認
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-      </button>
+      <div class="submit-status" id="pay-status"></div>
     </div>
 
     <!-- Step 6: Email -->
     <div class="step" id="step-6">
-      <div class="step-number">5</div>
+      <div class="step-number">4</div>
       <div class="question">請填寫電子郵件 *</div>
       <div class="question-desc">務必填寫可聯絡信箱，確認通知將寄送至此</div>
       <input class="text-input" type="email" id="email-input" placeholder="yourname@email.com">
@@ -820,7 +791,7 @@
 
     <!-- Step 7: 暱稱 -->
     <div class="step" id="step-7">
-      <div class="step-number">6</div>
+      <div class="step-number">5</div>
       <div class="question">請填寫暱稱 *</div>
       <div class="question-desc">您希望我們如何稱呼您？</div>
       <input class="text-input" type="text" id="nick-input" placeholder="請輸入您的暱稱">
@@ -900,7 +871,7 @@
   const times = ['10:00–11:00','11:00–12:00','12:00–13:00','13:00–14:00','14:00–15:00','15:00–16:00','16:00–17:00','17:00–18:00','18:00–19:00','19:00–20:00'];
   const MAX_PER_SLOT = 20;
   const PRICE = 520;
-  let state = { date: null, time: null, people: null, confirmed: false, code: '', email: '', nick: '', tempReserved: false };
+  let state = { date: null, time: null, people: null, email: '', nick: '', orderId: '', tempReserved: false };
   let slotCounts = {};
 
   // Supabase API 呼叫
@@ -1110,6 +1081,8 @@
     if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.innerHTML = origHTML; }
     document.getElementById('amt-people').textContent = state.people;
     document.getElementById('amt-total').textContent = (state.people * PRICE).toLocaleString();
+    // 產生唯一訂單編號
+    state.orderId = 'TF' + Date.now();
     goTo(4);
     startCountdown();
   }
@@ -1205,27 +1178,60 @@
     );
   });
 
-  function copyAccount() {
-    navigator.clipboard.writeText('111017608345').catch(() => {});
-    const btn = document.getElementById('copy-btn');
-    btn.textContent = '已複製';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '複製'; btn.classList.remove('copied'); }, 2000);
-  }
+  async function goToECPay() {
+    const btn = document.getElementById('pay-btn');
+    const status = document.getElementById('pay-status');
+    btn.disabled = true;
+    status.innerHTML = '<span class="spinner"></span>連線中…';
 
-  function selectConfirm() {
-    state.confirmed = true;
-    document.getElementById('confirm-yes').classList.add('selected');
-    document.getElementById('err-confirm').classList.remove('show');
-  }
+    try {
+      const dateLabel = '2026/' + state.date + (state.date === '5/1' ? '（六）' : '（日）');
+      // 先寫入 Supabase 報名資料
+      const result = await sbFetch('/rest/v1/rpc/confirm_registration', {
+        method: 'POST',
+        body: JSON.stringify({
+          p_date: dateLabel,
+          p_time: state.time,
+          p_people: state.people,
+          p_amount: state.people * PRICE,
+          p_order_id: state.orderId,
+          p_email: state.email,
+          p_nick: state.nick
+        })
+      });
 
-  function nextFromConfirm() {
-    if (!state.confirmed) { document.getElementById('err-confirm').classList.add('show'); return; }
-    const code = document.getElementById('transfer-code').value.trim();
-    if (code.length !== 5) { document.getElementById('err-code').classList.add('show'); return; }
-    state.code = code;
-    document.getElementById('err-code').classList.remove('show');
-    goTo(6);
+      if (result.result !== 'success') {
+        btn.disabled = false;
+        status.innerHTML = '';
+        alert('系統忙碌，請稍後再試。');
+        return;
+      }
+
+      state.tempReserved = false;
+      stopCountdown();
+
+      // 跳轉到綠界付款
+      const ecpayRes = await fetch('/.netlify/functions/ecpay-create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: state.orderId,
+          amount: state.people * PRICE,
+          desc: 'LE SSERAFIM 5週年應援展覽報名',
+          email: state.email
+        })
+      });
+
+      const html = await ecpayRes.text();
+      document.open();
+      document.write(html);
+      document.close();
+
+    } catch(e) {
+      btn.disabled = false;
+      status.innerHTML = '';
+      alert('連線失敗，請稍後再試。');
+    }
   }
 
   function nextFromEmail() {
@@ -1252,8 +1258,7 @@
       ['參展日期', dateLabel],
       ['入場時段', state.time],
       ['報名人數', state.people + ' 人'],
-      ['匯款金額', 'NT$' + (state.people * PRICE).toLocaleString()],
-      ['轉帳後五碼', '…' + state.code],
+      ['付款金額', 'NT$' + (state.people * PRICE).toLocaleString()],
       ['電子郵件', state.email],
       ['暱稱', state.nick]
     ];
@@ -1332,8 +1337,7 @@
       ['日期', dateLabel],
       ['時段', state.time],
       ['報名人數', state.people + ' 人'],
-      ['匯款金額', 'NT$' + (state.people * PRICE).toLocaleString()],
-      ['轉帳後五碼', '…' + state.code],
+      ['付款金額', 'NT$' + (state.people * PRICE).toLocaleString()],
       ['信箱', state.email],
       ['暱稱', state.nick]
     ];
