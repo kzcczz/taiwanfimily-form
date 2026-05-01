@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理員後台 — LE SSERAFIM 5 YEARS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #5B9BD5;
+      --blue-light: #D6E8F7;
+      --blue-dark: #2B5F9E;
+      --bg: #f5f5f3;
+      --card: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: rgba(0,0,0,0.1);
+      --danger: #e74c3c;
+      --success: #27ae60;
+      --radius: 10px;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* LOGIN */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .login-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .login-logo {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+    .login-title { font-size: 22px; font-weight: 500; margin-bottom: 2rem; }
+    .field { margin-bottom: 1rem; }
+    .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 0.4rem; }
+    .field input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+      background: var(--card);
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,155,213,0.15); }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .login-btn:hover { background: var(--blue-dark); }
+    .login-btn:disabled { opacity: 0.5; cursor: default; }
+    .login-error { font-size: 13px; color: var(--danger); margin-top: 0.75rem; display: none; }
+    .login-error.show { display: block; }
+
+    /* ADMIN */
+    #admin-screen { display: none; }
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 10px; }
+    .topbar-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+    .topbar-title { font-size: 14px; font-weight: 500; color: var(--muted); }
+    .logout-btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--muted);
+      transition: border-color 0.15s;
+    }
+    .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    .admin-body { padding: 1.5rem; max-width: 1100px; margin: 0 auto; }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* SLOTS GRID */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
+    .slot-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+    }
+    .slot-date { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+    .slot-time { font-size: 15px; font-weight: 500; margin-bottom: 0.75rem; }
+    .slot-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+    .slot-remaining { font-size: 13px; color: var(--muted); }
+    .slot-remaining span { font-weight: 500; color: var(--text); }
+    .slot-full { color: var(--danger); font-weight: 500; }
+    .slot-controls { display: flex; align-items: center; gap: 6px; }
+    .slot-input {
+      width: 52px;
+      padding: 4px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+      font-family: inherit;
+      outline: none;
+    }
+    .slot-input:focus { border-color: var(--blue); }
+    .slot-save {
+      padding: 4px 10px;
+      font-size: 12px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .slot-save:hover { background: var(--blue-dark); }
+    .slot-saved { color: var(--success); font-size: 12px; display: none; }
+
+    /* REGISTRATIONS TABLE */
+    .table-wrap { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 2rem; }
+    .table-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .table-header-title { font-size: 15px; font-weight: 500; }
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-select {
+      padding: 6px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { padding: 10px 14px; text-align: left; font-size: 12px; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--border); background: var(--bg); }
+    td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(91,155,213,0.04); }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .badge-pending { background: #fff3cd; color: #856404; }
+    .badge-paid { background: #d1f2eb; color: #1a7a4a; }
+
+    .status-select {
+      padding: 3px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .refresh-btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+    }
+    .refresh-btn:hover { background: #c0d8ef; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+    }
+    .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .stat-value { font-size: 28px; font-weight: 500; }
+
+    .empty-row td { text-align: center; color: var(--muted); padding: 2rem; }
+
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid var(--blue-light);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- 登入畫面 -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">LE SSERAFIM 5 YEARS ANNIVERSARY</div>
+    <div class="login-title">管理員登入</div>
+    <div class="field">
+      <label>電子郵件</label>
+      <input type="email" id="login-email" placeholder="admin@email.com">
+    </div>
+    <div class="field">
+      <label>密碼</label>
+      <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">登入</button>
+    <div class="login-error" id="login-error">帳號或密碼錯誤，請再試一次</div>
+  </div>
+</div>
+
+<!-- 管理員畫面 -->
+<div id="admin-screen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-dot"></div>
+      <span class="topbar-title">LE SSERAFIM 5 YEARS — 管理後台</span>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">登出</button>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- 統計 -->
+    <div class="section-title">總覽</div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">總報名人次</div><div class="stat-value" id="stat-total">—</div></div>
+      <div class="stat-card"><div class="stat-label">待確認</div><div class="stat-value" id="stat-pending">—</div></div>
+      <div class="stat-card"><div class="stat-label">已付款</div><div class="stat-value" id="stat-paid">—</div></div>
+      <div class="stat-card"><div class="stat-label">5/1 人數</div><div class="stat-value" id="stat-d1">—</div></div>
+      <div class="stat-card"><div class="stat-label">5/2 人數</div><div class="stat-value" id="stat-d2">—</div></div>
+    </div>
+
+    <!-- 時段名額管理 -->
+    <div class="section-title">時段名額管理</div>
+    <div class="slots-grid" id="slots-grid">
+      <div style="color:var(--muted);font-size:14px;padding:1rem 0"><span class="spinner"></span> 載入中…</div>
+    </div>
+
+    <!-- 報名資料 -->
+    <div class="section-title">報名資料</div>
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-header-title">所有報名 <span id="reg-count" style="color:var(--muted);font-size:13px;font-weight:400"></span></div>
+        <div class="filter-row">
+          <select class="filter-select" id="filter-date" onchange="renderTable()">
+            <option value="">所有日期</option>
+            <option value="2026/5/1（六）">5/1（六）</option>
+            <option value="2026/5/2（日）">5/2（日）</option>
+          </select>
+          <select class="filter-select" id="filter-status" onchange="renderTable()">
+            <option value="">所有狀態</option>
+            <option value="待確認">待確認</option>
+            <option value="已付款">已付款</option>
+          </select>
+          <button class="refresh-btn" onclick="loadAll()">重新整理</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>時間</th>
+              <th>暱稱</th>
+              <th>日期</th>
+              <th>時段</th>
+              <th>人數</th>
+              <th>金額</th>
+              <th>轉帳後五碼</th>
+              <th>Email</th>
+              <th>狀態</th>
+            </tr>
+          </thead>
+          <tbody id="reg-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://gexcoudliocybhmlziss.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
+  const ADMIN_EMAIL = 'thisisccy@gmail.com';
+
+  let accessToken = null;
+  let allRegs = [];
+
+  async function sbFetch(path, options = {}, token = null) {
+    const res = await fetch(SUPABASE_URL + path, {
+      ...options,
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + (token || accessToken || SUPABASE_KEY),
+        'Content-Type': 'application/json',
+        ...(options.headers || {})
+      }
+    });
+    const text = await res.text();
+    try { return JSON.parse(text); } catch(e) { return {}; }
+  }
+
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const btn = document.getElementById('login-btn');
+    const err = document.getElementById('login-error');
+
+    if (email !== ADMIN_EMAIL) {
+      err.classList.add('show');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '登入中…';
+    err.classList.remove('show');
+
+    const res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (data.access_token) {
+      accessToken = data.access_token;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      loadAll();
+    } else {
+      err.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = '登入';
+    }
+  }
+
+  function doLogout() {
+    accessToken = null;
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-screen').style.display = 'none';
+    document.getElementById('login-password').value = '';
+  }
+
+  async function loadAll() {
+    await Promise.all([loadSlots(), loadRegistrations()]);
+  }
+
+  async function loadSlots() {
+    const data = await sbFetch('/rest/v1/slots?select=*&order=date,time');
+    const grid = document.getElementById('slots-grid');
+    if (!data || !data.length) { grid.innerHTML = '<div style="color:var(--muted)">無資料</div>'; return; }
+
+    grid.innerHTML = data.map(slot => {
+      const remaining = slot.capacity - slot.booked;
+      const isFull = remaining <= 0;
+      return `
+        <div class="slot-card">
+          <div class="slot-date">${slot.date}</div>
+          <div class="slot-time">${slot.time}</div>
+          <div class="slot-info">
+            <span class="slot-remaining ${isFull ? 'slot-full' : ''}">
+              剩餘 <span>${remaining}</span> / ${slot.capacity}
+            </span>
+          </div>
+          <div class="slot-controls">
+            <input class="slot-input" type="number" id="slot-input-${slot.id}" value="${slot.booked}" min="0" max="${slot.capacity}">
+            <button class="slot-save" onclick="saveSlot('${slot.id}', '${slot.date}', '${slot.time}')">儲存</button>
+            <span class="slot-saved" id="slot-saved-${slot.id}">✓</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function saveSlot(id, date, time) {
+    const input = document.getElementById('slot-input-' + id);
+    const booked = parseInt(input.value);
+    const savedEl = document.getElementById('slot-saved-' + id);
+
+    await sbFetch('/rest/v1/slots?id=eq.' + id, {
+      method: 'PATCH',
+      body: JSON.stringify({ booked })
+    });
+
+    savedEl.style.display = 'inline';
+    setTimeout(() => { savedEl.style.display = 'none'; }, 2000);
+    await loadSlots();
+  }
+
+  async function loadRegistrations() {
+    const data = await sbFetch('/rest/v1/registrations?select=*&order=created_at.desc');
+    allRegs = data || [];
+
+    // Stats
+    const total = allRegs.reduce((s, r) => s + (parseInt(r.people) || 0), 0);
+    const pending = allRegs.filter(r => r.status === '待確認').length;
+    const paid = allRegs.filter(r => r.status === '已付款').length;
+    const d1 = allRegs.filter(r => r.date && r.date.includes('5/1')).reduce((s, r) => s + (parseInt(r.people) || 0), 0);
+    const d2 = allRegs.filter(r => r.date && r.date.includes('5/2')).reduce((s, r) => s + (parseInt(r.people) || 0), 0);
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-pending').textContent = pending;
+    document.getElementById('stat-paid').textContent = paid;
+    document.getElementById('stat-d1').textContent = d1;
+    document.getElementById('stat-d2').textContent = d2;
+
+    renderTable();
+  }
+
+  function renderTable() {
+    const filterDate = document.getElementById('filter-date').value;
+    const filterStatus = document.getElementById('filter-status').value;
+
+    let filtered = allRegs.filter(r => {
+      if (filterDate && r.date !== filterDate) return false;
+      if (filterStatus && r.status !== filterStatus) return false;
+      return true;
+    });
+
+    document.getElementById('reg-count').textContent = '（' + filtered.length + ' 筆）';
+
+    const tbody = document.getElementById('reg-tbody');
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="9">尚無報名資料</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(r => {
+      const date = new Date(r.created_at);
+      const dateStr = date.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const isPaid = r.status === '已付款';
+      return `
+        <tr>
+          <td style="color:var(--muted);font-size:12px;white-space:nowrap">${dateStr}</td>
+          <td><strong>${r.nick || '—'}</strong></td>
+          <td style="white-space:nowrap">${r.date || '—'}</td>
+          <td style="white-space:nowrap">${r.time || '—'}</td>
+          <td>${r.people || '—'}</td>
+          <td>NT$${(r.amount || 0).toLocaleString()}</td>
+          <td style="font-family:monospace">…${r.code || '—'}</td>
+          <td style="font-size:12px;color:var(--muted)">${r.email || '—'}</td>
+          <td>
+            <select class="status-select" onchange="updateStatus('${r.id}', this.value)">
+              <option value="待確認" ${!isPaid ? 'selected' : ''}>待確認</option>
+              <option value="已付款" ${isPaid ? 'selected' : ''}>已付款</option>
+            </select>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function updateStatus(id, status) {
+    await sbFetch('/rest/v1/registrations?id=eq.' + id, {
+      method: 'PATCH',
+      body: JSON.stringify({ status })
+    });
+    await loadRegistrations();
+  }
+</script>
+</body>
+</html>
