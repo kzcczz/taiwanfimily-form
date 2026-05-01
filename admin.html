@@ -122,9 +122,16 @@
     /* SLOTS GRID */
     .slots-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
+      grid-template-columns: 1fr;
+      gap: 0;
       margin-bottom: 2rem;
+    }
+
+    .slots-subgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+      margin-bottom: 0.5rem;
     }
     .slot-card {
       background: var(--card);
@@ -533,29 +540,48 @@
     const grid = document.getElementById('slots-grid');
     if (!data || !data.length) { grid.innerHTML = '<div style="color:var(--muted)">無資料</div>'; return; }
 
-    grid.innerHTML = data.map(slot => {
-      const remaining = slot.capacity - slot.booked;
-      const isFull = remaining <= 0;
-      return `
-        <div class="slot-card">
-          <div class="slot-date">${slot.date}</div>
-          <div class="slot-time">${slot.time}</div>
-          <div class="slot-info">
-            <span class="slot-remaining ${isFull ? 'slot-full' : ''}">
-              剩餘 <span>${remaining}</span> / ${slot.capacity}
-            </span>
+    const d1 = data.filter(s => s.date.includes('5/1'));
+    const d2 = data.filter(s => s.date.includes('5/2'));
+
+    function renderSlots(slots) {
+      return slots.map(slot => {
+        const remaining = slot.capacity - slot.booked;
+        const isFull = remaining <= 0;
+        return `
+          <div class="slot-card">
+            <div class="slot-time">${slot.time}</div>
+            <div class="slot-info">
+              <span class="slot-remaining ${isFull ? 'slot-full' : ''}">
+                剩餘 <span>${remaining}</span> / ${slot.capacity}
+              </span>
+            </div>
+            <div class="slot-controls">
+              <input class="slot-input" type="number" id="slot-input-${slot.id}" value="${slot.booked}" min="0" max="${slot.capacity}">
+              <button class="slot-save" onclick="saveSlot('${slot.id}')">儲存</button>
+              <span class="slot-saved" id="slot-saved-${slot.id}">✓</span>
+            </div>
           </div>
-          <div class="slot-controls">
-            <input class="slot-input" type="number" id="slot-input-${slot.id}" value="${slot.booked}" min="0" max="${slot.capacity}">
-            <button class="slot-save" onclick="saveSlot('${slot.id}', '${slot.date}', '${slot.time}')">儲存</button>
-            <span class="slot-saved" id="slot-saved-${slot.id}">✓</span>
-          </div>
+        `;
+      }).join('');
+    }
+
+    grid.innerHTML = `
+      <div style="grid-column:1/-1">
+        <div style="font-size:14px;font-weight:500;color:var(--blue-dark);margin-bottom:8px;padding:6px 10px;background:var(--blue-light);border-radius:8px;display:inline-block;">
+          📅 2026/5/1（六）
         </div>
-      `;
-    }).join('');
+        <div class="slots-subgrid">${renderSlots(d1)}</div>
+      </div>
+      <div style="grid-column:1/-1;margin-top:1rem;">
+        <div style="font-size:14px;font-weight:500;color:var(--blue-dark);margin-bottom:8px;padding:6px 10px;background:var(--blue-light);border-radius:8px;display:inline-block;">
+          📅 2026/5/2（日）
+        </div>
+        <div class="slots-subgrid">${renderSlots(d2)}</div>
+      </div>
+    `;
   }
 
-  async function saveSlot(id, date, time) {
+  async function saveSlot(id) {
     const input = document.getElementById('slot-input-' + id);
     const booked = parseInt(input.value);
     const savedEl = document.getElementById('slot-saved-' + id);
