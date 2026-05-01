@@ -1367,20 +1367,22 @@
       state.tempReserved = false; // 已正式寫入，不需要釋放
       stopCountdown();
 
-      // 同步到 Google Sheets（備份用，失敗不影響報名）
+      // 寄確認 Email
       try {
-        const params = new URLSearchParams({
-          action: 'submit',
-          date: dateLabel,
-          time: state.time,
-          people: state.people,
-          amount: state.people * PRICE,
-          code: state.code,
-          email: state.email,
-          nick: state.nick
+        fetch('/.netlify/functions/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: state.email,
+            nick: state.nick,
+            date: dateLabel,
+            time: state.time,
+            people: state.people,
+            amount: state.people * PRICE,
+            code: state.code
+          })
         });
-        fetch(SHEET_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
-      } catch(e) {}
+      } catch(e) { console.log('Email 寄送失敗', e); }
 
       showFinalSummary();
       showStep('done');
