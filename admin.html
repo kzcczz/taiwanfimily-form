@@ -253,6 +253,103 @@
       vertical-align: middle;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* DELETE MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1.5rem;
+      display: none;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    }
+    .modal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fef2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 22px;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .modal-desc {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+    .modal-field { margin-bottom: 1rem; }
+    .modal-field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 0.4rem; }
+    .modal-field input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+    }
+    .modal-field input:focus { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(231,76,60,0.12); }
+    .modal-field input.shake {
+      animation: shake 0.3s ease;
+      border-color: var(--danger);
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+    .modal-actions { display: flex; gap: 8px; }
+    .modal-cancel {
+      flex: 1;
+      padding: 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .modal-cancel:hover { border-color: var(--muted); }
+    .modal-confirm {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .modal-confirm:hover { background: #c0392b; }
+    .modal-confirm:disabled { opacity: 0.5; cursor: default; }
+    .modal-error { font-size: 13px; color: var(--danger); margin-top: 0.5rem; display: none; text-align: center; }
+    .modal-error.show { display: block; }
   </style>
 </head>
 <body>
@@ -320,6 +417,7 @@
             <option value="已付款">已付款</option>
           </select>
           <button class="refresh-btn" onclick="loadAll()">重新整理</button>
+          <button class="refresh-btn" style="background:#fef2f2;color:var(--danger);" onclick="showDeleteModal()">🗑 清除所有資料</button>
         </div>
       </div>
       <div style="overflow-x:auto;">
@@ -342,6 +440,24 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- 刪除確認 Modal -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">確定要刪除所有資料？</div>
+    <div class="modal-desc">此操作將清除所有報名記錄並重置所有時段名額，<strong>無法復原</strong>。</div>
+    <div class="modal-field">
+      <label>請輸入管理員密碼確認</label>
+      <input type="password" id="delete-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') confirmDelete()">
+    </div>
+    <div class="modal-error" id="delete-error">密碼錯誤，請再試一次</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="hideDeleteModal()">取消</button>
+      <button class="modal-confirm" id="delete-confirm-btn" onclick="confirmDelete()">確認刪除</button>
+    </div>
   </div>
 </div>
 
@@ -523,6 +639,60 @@
       body: JSON.stringify({ status })
     });
     await loadRegistrations();
+  }
+
+  function showDeleteModal() {
+    document.getElementById('delete-password').value = '';
+    document.getElementById('delete-error').classList.remove('show');
+    document.getElementById('delete-modal').classList.add('show');
+    setTimeout(() => document.getElementById('delete-password').focus(), 100);
+  }
+
+  function hideDeleteModal() {
+    document.getElementById('delete-modal').classList.remove('show');
+  }
+
+  async function confirmDelete() {
+    const password = document.getElementById('delete-password').value;
+    const btn = document.getElementById('delete-confirm-btn');
+    const err = document.getElementById('delete-error');
+    const input = document.getElementById('delete-password');
+
+    // 驗證密碼
+    const res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: ADMIN_EMAIL, password })
+    });
+    const data = await res.json();
+
+    if (!data.access_token) {
+      err.classList.add('show');
+      input.classList.add('shake');
+      setTimeout(() => input.classList.remove('shake'), 300);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '刪除中…';
+    err.classList.remove('show');
+
+    // 刪除所有報名資料
+    await sbFetch('/rest/v1/registrations?id=neq.00000000-0000-0000-0000-000000000000', {
+      method: 'DELETE'
+    });
+
+    // 重置所有時段名額
+    await sbFetch('/rest/v1/slots?capacity=gt.0', {
+      method: 'PATCH',
+      body: JSON.stringify({ booked: 0, reserved_until: null, reserved_people: 0 })
+    });
+
+    btn.disabled = false;
+    btn.textContent = '確認刪除';
+    hideDeleteModal();
+    await loadAll();
+    alert('✓ 所有資料已清除，時段名額已重置');
   }
 </script>
 </body>
