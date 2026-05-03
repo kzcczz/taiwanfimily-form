@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>演唱會應援意願調查 — TAIWAN FIMILY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #f5f6f8;
+      color: #111827;
+      min-height: 100vh;
+      padding-bottom: 4rem;
+    }
+
+    /* HEADER */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      height: 14px;
+      width: auto;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 20px;
+      background: #e5e7eb;
+    }
+
+    .header-title {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+    }
+
+    /* HERO */
+    .hero {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 3px 12px;
+      background: #eff6ff;
+      color: #2563eb;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 0.875rem;
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    /* QUESTION CARD */
+    .q-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .q-num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: #2563eb;
+      margin-bottom: 0.5rem;
+    }
+
+    .q-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .q-desc {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+
+    /* SLIDER */
+    .slider-wrap {
+      padding: 0.5rem 0;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .slider-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .slider-value {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+
+    .slider-value .big {
+      font-size: 40px;
+      font-weight: 700;
+      color: #2563eb;
+      line-height: 1;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #2563eb;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+
+    .slider-sub {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .slider-sub-val {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    /* RANK */
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rank-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      cursor: grab;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .rank-item:active { cursor: grabbing; }
+
+    .rank-item.dragging {
+      opacity: 0.5;
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .rank-item.drag-over {
+      border-color: #2563eb;
+      background: #eff6ff;
+      transform: scale(1.01);
+    }
+
+    .rank-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rank-num.rank-1 { background: #1e40af; }
+    .rank-num.rank-2 { background: #2563eb; }
+    .rank-num.rank-3 { background: #3b82f6; }
+    .rank-num.rank-4 { background: #60a5fa; color: #1e3a8a; }
+    .rank-num.rank-5 { background: #93c5fd; color: #1e3a8a; }
+
+    .rank-name {
+      font-size: 14px;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .rank-handle {
+      color: #d1d5db;
+      font-size: 16px;
+    }
+
+    .rank-hint {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* TEXTAREA */
+    .survey-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      color: #111827;
+      line-height: 1.6;
+      transition: border-color 0.15s;
+      background: #f9fafb;
+    }
+
+    .survey-textarea:focus { border-color: #2563eb; background: #fff; }
+    .survey-textarea::placeholder { color: #9ca3af; }
+
+    /* SUBMIT */
+    .submit-wrap {
+      margin-top: 2rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .submit-btn:hover { background: #1d4ed8; }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+    .submit-note {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 0.75rem;
+    }
+
+    /* DONE */
+    .done-screen {
+      display: none;
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .done-icon {
+      font-size: 56px;
+      margin-bottom: 1rem;
+    }
+
+    .done-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .done-desc {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #2563eb;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <img class="header-logo" src="data:image/png;base64,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" alt="TAIWAN FIMILY" style="filter:invert(1) sepia(1) saturate(2) hue-rotate(180deg);">
+  <div class="header-divider"></div>
+  <div class="header-title">演唱會應援意願調查</div>
+</div>
+
+<div class="main">
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress" style="width:0%"></div>
+  </div>
+
+  <!-- DONE SCREEN -->
+  <div class="done-screen" id="done-screen">
+    <div class="done-icon">🎉</div>
+    <div class="done-title">感謝你的回饋！</div>
+    <div class="done-desc">你的意見將幫助我們規劃更好的應援活動<br>期待在演唱會現場見到你！</div>
+  </div>
+
+  <!-- FORM -->
+  <form id="survey-form" onsubmit="return false;">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag">TAIWAN FIMILY · 應援企劃</div>
+      <div class="hero-title">演唱會應援內容意願調查</div>
+      <div class="hero-desc">
+        我們正在規劃演唱會應援活動，希望了解大家對各項應援內容的意願與偏好。<br>
+        你的回饋將直接影響應援企劃的方向，請誠實填寫！
+      </div>
+    </div>
+
+    <!-- Q1: 比例滑桿 -->
+    <div class="q-card">
+      <div class="q-num">01 · 場內 / 場外比例</div>
+      <div class="q-title">你希望資源分配的比例是？</div>
+      <div class="q-desc">拖動滑桿調整場內和場外應援的資源比例</div>
+      <div class="slider-wrap">
+        <div class="slider-value">
+          <span class="big" id="indoor-pct">50</span>% 場內 &nbsp;·&nbsp; <span class="big" id="outdoor-pct">50</span>% 場外
+        </div>
+        <input type="range" id="ratio-slider" min="0" max="100" value="50" step="5"
+          oninput="updateRatio(this.value)"
+          style="background: linear-gradient(to right, #2563eb 50%, #e5e7eb 50%)">
+        <div class="slider-sub">
+          <span>100% 場外</span>
+          <span>各半</span>
+          <span>100% 場內</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2: 場內排序 -->
+    <div class="q-card">
+      <div class="q-num">02 · 場內應援</div>
+      <div class="q-title">場內應援項目，請依意願排序</div>
+      <div class="q-desc">第 1 名為最希望看到的項目</div>
+      <div class="rank-hint">☰ 拖曳項目調整順序</div>
+      <div class="rank-list" id="indoor-rank">
+        <div class="rank-item" draggable="true" data-name="手幅">
+          <div class="rank-num rank-1">1</div>
+          <div class="rank-name">手幅</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+        <div class="rank-item" draggable="true" data-name="排字">
+          <div class="rank-num rank-2">2</div>
+          <div class="rank-name">排字</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+        <div class="rank-item" draggable="true" data-name="清唱">
+          <div class="rank-num rank-3">3</div>
+          <div class="rank-name">清唱</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3: 場外排序 -->
+    <div class="q-card">
+      <div class="q-num">03 · 場外應援</div>
+      <div class="q-title">場外應援項目，請依意願排序</div>
+      <div class="q-desc">第 1 名為最希望看到的項目</div>
+      <div class="rank-hint">☰ 拖曳項目調整順序</div>
+      <div class="rank-list" id="outdoor-rank">
+        <div class="rank-item" draggable="true" data-name="氣膜">
+          <div class="rank-num rank-1">1</div>
+          <div class="rank-name">氣膜</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+        <div class="rank-item" draggable="true" data-name="立牌">
+          <div class="rank-num rank-2">2</div>
+          <div class="rank-name">立牌</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+        <div class="rank-item" draggable="true" data-name="咖啡車">
+          <div class="rank-num rank-3">3</div>
+          <div class="rank-name">咖啡車</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+        <div class="rank-item" draggable="true" data-name="應援車">
+          <div class="rank-num rank-4">4</div>
+          <div class="rank-name">應援車</div>
+          <div class="rank-handle">⋮⋮</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4: 其他意見 -->
+    <div class="q-card">
+      <div class="q-num">04 · 其他建議</div>
+      <div class="q-title">其他推薦應援或回饋意見</div>
+      <div class="q-desc">有任何想法或建議都歡迎告訴我們！（選填）</div>
+      <textarea class="survey-textarea" id="feedback" placeholder="例如：希望有 OO 應援、對 XX 項目有疑問…"></textarea>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submit-btn" onclick="submitSurvey()">送出意見</button>
+      <div class="submit-note">你的回饋將以匿名方式儲存</div>
+    </div>
+
+  </form>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gexcoudliocybhmlziss.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
+
+// SLIDER
+function updateRatio(val) {
+  const indoor = parseInt(val);
+  const outdoor = 100 - indoor;
+  document.getElementById('indoor-pct').textContent = indoor;
+  document.getElementById('outdoor-pct').textContent = outdoor;
+  const slider = document.getElementById('ratio-slider');
+  slider.style.background = `linear-gradient(to right, #2563eb ${indoor}%, #e5e7eb ${indoor}%)`;
+  updateProgress();
+}
+
+// DRAG & DROP RANK
+function initDrag(listId) {
+  const list = document.getElementById(listId);
+  let dragItem = null;
+
+  list.querySelectorAll('.rank-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragItem = item;
+      setTimeout(() => item.classList.add('dragging'), 0);
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      updateRankNums(listId);
+      updateProgress();
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      if(item !== dragItem) {
+        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+        item.classList.add('drag-over');
+        const rect = item.getBoundingClientRect();
+        const mid = rect.top + rect.height / 2;
+        if(e.clientY < mid) list.insertBefore(dragItem, item);
+        else list.insertBefore(dragItem, item.nextSibling);
+      }
+    });
+  });
+
+  // Touch support
+  let touchDragItem = null;
+  let touchClone = null;
+
+  list.querySelectorAll('.rank-item').forEach(item => {
+    item.addEventListener('touchstart', e => {
+      touchDragItem = item;
+      item.classList.add('dragging');
+    }, {passive: true});
+
+    item.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      if(!el) return;
+      const target = el.closest('.rank-item');
+      if(target && target !== touchDragItem) {
+        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+        target.classList.add('drag-over');
+        const rect = target.getBoundingClientRect();
+        if(touch.clientY < rect.top + rect.height / 2) list.insertBefore(touchDragItem, target);
+        else list.insertBefore(touchDragItem, target.nextSibling);
+      }
+    }, {passive: false});
+
+    item.addEventListener('touchend', () => {
+      if(touchDragItem) touchDragItem.classList.remove('dragging');
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      touchDragItem = null;
+      updateRankNums(listId);
+      updateProgress();
+    });
+  });
+}
+
+function updateRankNums(listId) {
+  const list = document.getElementById(listId);
+  list.querySelectorAll('.rank-item').forEach((item, i) => {
+    const num = item.querySelector('.rank-num');
+    num.textContent = i + 1;
+    num.className = 'rank-num rank-' + (i + 1);
+  });
+}
+
+function getRankOrder(listId) {
+  return Array.from(document.getElementById(listId).querySelectorAll('.rank-item'))
+    .map((item, i) => ({ rank: i + 1, name: item.dataset.name }));
+}
+
+initDrag('indoor-rank');
+initDrag('outdoor-rank');
+
+// PROGRESS
+function updateProgress() {
+  const ratio = document.getElementById('ratio-slider').value !== '50' ? 1 : 0;
+  const feedback = document.getElementById('feedback').value.trim() ? 1 : 0;
+  const pct = Math.round(((2 + ratio + feedback) / 4) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+}
+
+document.getElementById('feedback').addEventListener('input', updateProgress);
+updateProgress();
+
+// SUBMIT
+async function submitSurvey() {
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '送出中…';
+
+  const data = {
+    ratio_indoor: parseInt(document.getElementById('ratio-slider').value),
+    ratio_outdoor: 100 - parseInt(document.getElementById('ratio-slider').value),
+    indoor_rank: getRankOrder('indoor-rank'),
+    outdoor_rank: getRankOrder('outdoor-rank'),
+    feedback: document.getElementById('feedback').value.trim() || null,
+    submitted_at: new Date().toISOString()
+  };
+
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/concert_survey', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if(res.status === 201 || res.status === 204) {
+      document.getElementById('survey-form').style.display = 'none';
+      document.getElementById('done-screen').style.display = 'block';
+      document.getElementById('progress').style.width = '100%';
+    } else {
+      const err = await res.json();
+      alert('送出失敗：' + JSON.stringify(err));
+      btn.disabled = false;
+      btn.textContent = '送出意見';
+    }
+  } catch(e) {
+    alert('網路錯誤，請再試一次');
+    btn.disabled = false;
+    btn.textContent = '送出意見';
+  }
+}
+</script>
+</body>
+</html>
