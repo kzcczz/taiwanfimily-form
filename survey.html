@@ -390,9 +390,9 @@
           oninput="updateRatio(this.value)"
           style="background: linear-gradient(to right, #7BA6DE 50%, #e5e7eb 50%)">
         <div class="slider-sub">
-          <span>100% 場外</span>
-          <span>各半</span>
           <span>100% 場內</span>
+          <span>各半</span>
+          <span>100% 場外</span>
         </div>
       </div>
     </div>
@@ -505,12 +505,12 @@ const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
 
 // SLIDER
 function updateRatio(val) {
-  const indoor = parseInt(val);
-  const outdoor = 100 - indoor;
+  const outdoor = parseInt(val);
+  const indoor = 100 - outdoor;
   document.getElementById('indoor-pct').textContent = indoor;
   document.getElementById('outdoor-pct').textContent = outdoor;
   const slider = document.getElementById('ratio-slider');
-  slider.style.background = `linear-gradient(to right, #7BA6DE ${indoor}%, #e5e7eb ${indoor}%)`;
+  slider.style.background = `linear-gradient(to right, #7BA6DE ${outdoor}%, #e5e7eb ${outdoor}%)`;
   updateProgress();
 }
 
@@ -615,8 +615,8 @@ async function submitSurvey() {
   btn.textContent = '送出中…';
 
   const data = {
-    ratio_indoor: parseInt(document.getElementById('ratio-slider').value),
-    ratio_outdoor: 100 - parseInt(document.getElementById('ratio-slider').value),
+    ratio_indoor: 100 - parseInt(document.getElementById('ratio-slider').value),
+    ratio_outdoor: parseInt(document.getElementById('ratio-slider').value),
     indoor_rank: getRankOrder('indoor-rank'),
     outdoor_rank: getRankOrder('outdoor-rank'),
     outdoor_activity: document.getElementById('outdoor-activity').value.trim() || null,
