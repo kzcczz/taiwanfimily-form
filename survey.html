@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
@@ -8,339 +9,346 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Noto Sans TC', sans-serif;
-      background: #f5f6f8;
-      color: #111827;
-      min-height: 100vh;
-      padding-bottom: 4rem;
-    }
+```
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #f5f6f8;
+  color: #111827;
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
 
-    /* HEADER */
-    .header {
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+/* HEADER */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .header-logo {
-      height: 14px;
-      width: auto;
-    }
+.header-logo {
+  height: 14px;
+  width: auto;
+}
 
-    .header-divider {
-      width: 1px;
-      height: 20px;
-      background: #e5e7eb;
-    }
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background: #e5e7eb;
+}
 
-    .header-title {
-      font-size: 14px;
-      color: #6b7280;
-    }
+.header-title {
+  font-size: 14px;
+  color: #6b7280;
+}
 
-    /* MAIN */
-    .main {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 2rem 1.25rem;
-    }
+/* MAIN */
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
 
-    /* HERO */
-    .hero {
-      background: #fff;
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-    }
+/* HERO */
+.hero {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
 
-    .hero-tag {
-      display: inline-block;
-      padding: 3px 12px;
-      background: #eff6ff;
-      color: #7BA6DE;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      margin-bottom: 0.875rem;
-    }
+.hero-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  background: #eff6ff;
+  color: #7BA6DE;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 0.875rem;
+}
 
-    .hero-title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
-    }
+.hero-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
 
-    .hero-desc {
-      font-size: 14px;
-      color: #6b7280;
-      line-height: 1.7;
-    }
+.hero-desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.7;
+}
 
-    /* QUESTION CARD */
-    .q-card {
-      background: #fff;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
-    }
+/* QUESTION CARD */
+.q-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
 
-    .q-num {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      color: #7BA6DE;
-      margin-bottom: 0.5rem;
-    }
+.q-num {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #7BA6DE;
+  margin-bottom: 0.5rem;
+}
 
-    .q-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      line-height: 1.4;
-    }
+.q-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
 
-    .q-desc {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 1.25rem;
-      line-height: 1.6;
-    }
+.q-desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
 
-    /* SLIDER */
-    .slider-wrap {
-      padding: 0.5rem 0;
-    }
+/* SLIDER */
+.slider-wrap {
+  padding: 0.5rem 0;
+}
 
-    .slider-labels {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.75rem;
-    }
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
 
-    .slider-label {
-      font-size: 13px;
-      font-weight: 500;
-      color: #374151;
-    }
+.slider-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
 
-    .slider-value {
-      text-align: center;
-      font-size: 18px;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 0.75rem;
-      line-height: 1.4;
-    }
+.slider-value {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
 
-    .slider-value .big {
-      font-size: 40px;
-      font-weight: 700;
-      color: #7BA6DE;
-      line-height: 1;
-    }
+.slider-value .big {
+  font-size: 40px;
+  font-weight: 700;
+  color: #7BA6DE;
+  line-height: 1;
+}
 
-    input[type="range"] {
-      width: 100%;
-      height: 6px;
-      border-radius: 6px;
-      outline: none;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-    }
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
 
-    input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #7BA6DE;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
-    }
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #7BA6DE;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+}
 
-    .slider-sub {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.75rem;
-      font-size: 12px;
-      color: #9ca3af;
-    }
+.slider-sub {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  font-size: 12px;
+  color: #9ca3af;
+}
 
-    .slider-sub-val {
-      font-weight: 500;
-      color: #374151;
-    }
+.slider-sub-val {
+  font-weight: 500;
+  color: #374151;
+}
 
-    /* RANK */
-    .rank-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+/* RANK */
+.rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-    .rank-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      background: #f9fafb;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 10px;
-      cursor: grab;
-      transition: all 0.15s;
-      user-select: none;
-    }
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  transition: all 0.15s;
+  user-select: none;
+}
 
-    .rank-item:active { cursor: grabbing; }
+.rank-item.dragging {
+  opacity: 0.5;
+  border-color: #7BA6DE;
+  background: #eff6ff;
+}
 
-    .rank-item.dragging {
-      opacity: 0.5;
-      border-color: #7BA6DE;
-      background: #eff6ff;
-    }
+.rank-item.drag-over {
+  border-color: #7BA6DE;
+  background: #eff6ff;
+  transform: scale(1.01);
+}
 
-    .rank-item.drag-over {
-      border-color: #7BA6DE;
-      background: #eff6ff;
-      transform: scale(1.01);
-    }
+.rank-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 
-    .rank-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
+.rank-num.rank-1 { background: #b45309; color: #fff; }
+.rank-num.rank-2 { background: #d97706; color: #fff; }
+.rank-num.rank-3 { background: #f59e0b; color: #fff; }
+.rank-num.rank-4 { background: #fbbf24; color: #78350f; }
+.rank-num.rank-5 { background: #fde68a; color: #78350f; }
 
-    .rank-num.rank-1 { background: #b45309; color: #fff; }
-    .rank-num.rank-2 { background: #d97706; color: #fff; }
-    .rank-num.rank-3 { background: #f59e0b; color: #fff; }
-    .rank-num.rank-4 { background: #fbbf24; color: #78350f; }
-    .rank-num.rank-5 { background: #fde68a; color: #78350f; }
+.rank-name {
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+}
 
-    .rank-name {
-      font-size: 14px;
-      font-weight: 500;
-      flex: 1;
-    }
+.rank-handle {
+  color: #4b5563;
+  font-size: 18px;
+  padding: 8px 6px;
+  margin: -8px -6px -8px 0;
+  cursor: grab;
+  touch-action: none;
+  line-height: 1;
+}
 
-    .rank-handle {
-      color: #d1d5db;
-      font-size: 16px;
-    }
+.rank-handle:active { cursor: grabbing; }
 
-    .rank-hint {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 0.875rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+.rank-hint {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-    /* TEXTAREA */
-    .survey-textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 10px;
-      font-size: 14px;
-      font-family: inherit;
-      resize: vertical;
-      min-height: 100px;
-      outline: none;
-      color: #111827;
-      line-height: 1.6;
-      transition: border-color 0.15s;
-      background: #f9fafb;
-    }
+/* TEXTAREA */
+.survey-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+  color: #111827;
+  line-height: 1.6;
+  transition: border-color 0.15s;
+  background: #f9fafb;
+}
 
-    .survey-textarea:focus { border-color: #7BA6DE; background: #fff; }
-    .survey-textarea::placeholder { color: #9ca3af; }
+.survey-textarea:focus { border-color: #7BA6DE; background: #fff; }
+.survey-textarea::placeholder { color: #9ca3af; }
 
-    /* SUBMIT */
-    .submit-wrap {
-      margin-top: 2rem;
-    }
+/* SUBMIT */
+.submit-wrap {
+  margin-top: 2rem;
+}
 
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: #7BA6DE;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-    }
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #7BA6DE;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
 
-    .submit-btn:hover { background: #6090cc; }
-    .submit-btn:active { transform: scale(0.99); }
-    .submit-btn:disabled { opacity: 0.5; cursor: default; }
+.submit-btn:hover { background: #6090cc; }
+.submit-btn:active { transform: scale(0.99); }
+.submit-btn:disabled { opacity: 0.5; cursor: default; }
 
-    .submit-note {
-      text-align: center;
-      font-size: 12px;
-      color: #9ca3af;
-      margin-top: 0.75rem;
-    }
+.submit-note {
+  text-align: center;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 0.75rem;
+}
 
-    /* DONE */
-    .done-screen {
-      display: none;
-      text-align: center;
-      padding: 3rem 1.5rem;
-    }
+/* DONE */
+.done-screen {
+  display: none;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
 
-    .done-icon {
-      font-size: 56px;
-      margin-bottom: 1rem;
-    }
+.done-icon {
+  font-size: 56px;
+  margin-bottom: 1rem;
+}
 
-    .done-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
+.done-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
 
-    .done-desc {
-      font-size: 14px;
-      color: #6b7280;
-      line-height: 1.7;
-    }
+.done-desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.7;
+}
 
-    .progress-bar {
-      height: 4px;
-      background: #e5e7eb;
-      border-radius: 4px;
-      margin-bottom: 2rem;
-      overflow: hidden;
-    }
+.progress-bar {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
 
-    .progress-fill {
-      height: 100%;
-      background: #7BA6DE;
-      border-radius: 4px;
-      transition: width 0.3s ease;
-    }
+.progress-fill {
+  height: 100%;
+  background: #7BA6DE;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+```
+
   </style>
 </head>
 <body>
@@ -358,6 +366,7 @@
   </div>
 
   <!-- DONE SCREEN -->
+
   <div class="done-screen" id="done-screen">
     <div class="done-icon">🎉</div>
     <div class="done-title">感謝你的回饋！</div>
@@ -365,136 +374,139 @@
   </div>
 
   <!-- FORM -->
+
   <form id="survey-form" onsubmit="return false;">
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="hero-tag">TAIWAN FIMILY · 應援企劃</div>
-      <div class="hero-title">LE SSERAFIM 演唱會應援內容意願調查</div>
-      <div class="hero-desc">
-        我們正在規劃演唱會應援活動，希望了解大家對各項應援內容的意願與偏好。<br>
-        你的回饋將直接影響應援企劃的方向，請誠實填寫！
-      </div>
-    </div>
+```
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">TAIWAN FIMILY · 應援企劃</div>
+  <div class="hero-title">LE SSERAFIM 演唱會應援內容意願調查</div>
+  <div class="hero-desc">
+    我們正在規劃演唱會應援活動，希望了解大家對各項應援內容的意願與偏好。<br>
+    你的回饋將直接影響應援企劃的方向，請誠實填寫！
+  </div>
+</div>
 
-    <!-- Q1: 比例滑桿 -->
-    <div class="q-card">
-      <div class="q-num">01 · 場內 / 場外比例</div>
-      <div class="q-title">你希望資源分配的比例是？</div>
-      <div class="q-desc">拖動滑桿調整場內和場外應援的資源比例</div>
-      <div class="slider-wrap">
-        <div class="slider-value">
-          <span class="big" id="indoor-pct">50</span>% 場內 &nbsp;·&nbsp; <span class="big" id="outdoor-pct">50</span>% 場外
-        </div>
-        <input type="range" id="ratio-slider" min="0" max="100" value="50" step="5"
-          oninput="updateRatio(this.value)"
-          style="background: linear-gradient(to right, #7BA6DE 50%, #e5e7eb 50%)">
-        <div class="slider-sub">
-          <span>100% 場內</span>
-          <span>各半</span>
-          <span>100% 場外</span>
-        </div>
-      </div>
+<!-- Q1: 比例滑桿 -->
+<div class="q-card">
+  <div class="q-num">01 · 場內 / 場外比例</div>
+  <div class="q-title">你希望資源分配的比例是？</div>
+  <div class="q-desc">拖動滑桿調整場內和場外應援的資源比例</div>
+  <div class="slider-wrap">
+    <div class="slider-value">
+      <span class="big" id="indoor-pct">50</span>% 場內 &nbsp;·&nbsp; <span class="big" id="outdoor-pct">50</span>% 場外
     </div>
+    <input type="range" id="ratio-slider" min="0" max="100" value="50" step="5"
+      oninput="updateRatio(this.value)"
+      style="background: linear-gradient(to right, #7BA6DE 50%, #e5e7eb 50%)">
+    <div class="slider-sub">
+      <span>100% 場內</span>
+      <span>各半</span>
+      <span>100% 場外</span>
+    </div>
+  </div>
+</div>
 
-    <!-- Q2: 場內排序 -->
-    <div class="q-card">
-      <div class="q-num">02 · 場內應援</div>
-      <div class="q-title">場內應援項目，請依意願排序</div>
-      <div class="q-desc">第 1 名為最希望看到的項目</div>
-      <div class="rank-hint">☰ 拖曳項目調整順序</div>
-      <div class="rank-list" id="indoor-rank">
-        <div class="rank-item" draggable="true" data-name="手機玻璃紙燈海">
-          <div class="rank-num rank-1">1</div>
-          <div class="rank-name">手機玻璃紙燈海</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="清唱">
-          <div class="rank-num rank-2">2</div>
-          <div class="rank-name">清唱</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="排字">
-          <div class="rank-num rank-3">3</div>
-          <div class="rank-name">排字</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="手幅">
-          <div class="rank-num rank-4">4</div>
-          <div class="rank-name">手幅</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="影片">
-          <div class="rank-num rank-5">5</div>
-          <div class="rank-name">影片</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-      </div>
+<!-- Q2: 場內排序 -->
+<div class="q-card">
+  <div class="q-num">02 · 場內應援</div>
+  <div class="q-title">場內應援項目，請依意願排序</div>
+  <div class="q-desc">第 1 名為最希望看到的項目</div>
+  <div class="rank-hint">☰ 拖曳項目調整順序</div>
+  <div class="rank-list" id="indoor-rank">
+    <div class="rank-item" data-name="手機玻璃紙燈海">
+      <div class="rank-num rank-1">1</div>
+      <div class="rank-name">手機玻璃紙燈海</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
     </div>
+    <div class="rank-item" data-name="清唱">
+      <div class="rank-num rank-2">2</div>
+      <div class="rank-name">清唱</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+    <div class="rank-item" data-name="排字">
+      <div class="rank-num rank-3">3</div>
+      <div class="rank-name">排字</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+    <div class="rank-item" data-name="手幅">
+      <div class="rank-num rank-4">4</div>
+      <div class="rank-name">手幅</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+    <div class="rank-item" data-name="影片">
+      <div class="rank-num rank-5">5</div>
+      <div class="rank-name">影片</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+  </div>
+</div>
 
-    <!-- Q3: 場外排序 -->
-    <div class="q-card">
-      <div class="q-num">03 · 場外應援</div>
-      <div class="q-title">場外應援項目，請依意願排序</div>
-      <div class="q-desc">第 1 名為最希望看到的項目</div>
-      <div class="rank-hint">☰ 拖曳項目調整順序</div>
-      <div class="rank-list" id="outdoor-rank">
-        <div class="rank-item" draggable="true" data-name="路燈旗">
-          <div class="rank-num rank-1">1</div>
-          <div class="rank-name">路燈旗</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="FIM CLUB / 手燈氣球模型">
-          <div class="rank-num rank-2">2</div>
-          <div class="rank-name">FIM CLUB / 手燈氣球模型</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="廣告車">
-          <div class="rank-num rank-3">3</div>
-          <div class="rank-name">廣告車</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="咖啡車">
-          <div class="rank-num rank-4">4</div>
-          <div class="rank-name">咖啡車</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-        <div class="rank-item" draggable="true" data-name="燈箱 / 廣告牆">
-          <div class="rank-num rank-5">5</div>
-          <div class="rank-name">燈箱 / 廣告牆</div>
-          <div class="rank-handle">⋮⋮</div>
-        </div>
-      </div>
+<!-- Q3: 場外排序 -->
+<div class="q-card">
+  <div class="q-num">03 · 場外應援</div>
+  <div class="q-title">場外應援項目，請依意願排序</div>
+  <div class="q-desc">第 1 名為最希望看到的項目</div>
+  <div class="rank-hint">☰ 拖曳項目調整順序</div>
+  <div class="rank-list" id="outdoor-rank">
+    <div class="rank-item" data-name="路燈旗">
+      <div class="rank-num rank-1">1</div>
+      <div class="rank-name">路燈旗</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
     </div>
+    <div class="rank-item" data-name="FIM CLUB / 手燈氣球模型">
+      <div class="rank-num rank-2">2</div>
+      <div class="rank-name">FIM CLUB / 手燈氣球模型</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+    <div class="rank-item" data-name="廣告車">
+      <div class="rank-num rank-3">3</div>
+      <div class="rank-name">廣告車</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+    <div class="rank-item" data-name="咖啡車">
+      <div class="rank-num rank-4">4</div>
+      <div class="rank-name">咖啡車</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+    <div class="rank-item" data-name="燈箱 / 廣告牆">
+      <div class="rank-num rank-5">5</div>
+      <div class="rank-name">燈箱 / 廣告牆</div>
+      <div class="rank-handle" draggable="true">⋮⋮</div>
+    </div>
+  </div>
+</div>
 
-    <!-- Q4: 場外活動 -->
-    <div class="q-card">
-      <div class="q-num">04 · 場外活動</div>
-      <div class="q-title">有什麼希望做的「場外活動」嗎？</div>
-      <div class="q-desc">例如：隨機舞蹈、互動攤位…等（選填）</div>
-      <textarea class="survey-textarea" id="outdoor-activity" placeholder="填寫你希望的場外活動內容…"></textarea>
-    </div>
+<!-- Q4: 場外活動 -->
+<div class="q-card">
+  <div class="q-num">04 · 場外活動</div>
+  <div class="q-title">有什麼希望做的「場外活動」嗎？</div>
+  <div class="q-desc">例如：隨機舞蹈、互動攤位…等（選填）</div>
+  <textarea class="survey-textarea" id="outdoor-activity" placeholder="填寫你希望的場外活動內容…"></textarea>
+</div>
 
-    <!-- Q5: 集資禮 -->
-    <div class="q-card">
-      <div class="q-num">05 · 集資禮</div>
-      <div class="q-title">有許願什麼集資禮嗎？</div>
-      <div class="q-desc">如果有的話，告訴我們你希望的集資禮！（選填）</div>
-      <textarea class="survey-textarea" id="crowdfund-wish" placeholder="填寫你希望的集資禮…"></textarea>
-    </div>
+<!-- Q5: 集資禮 -->
+<div class="q-card">
+  <div class="q-num">05 · 集資禮</div>
+  <div class="q-title">有許願什麼集資禮嗎？</div>
+  <div class="q-desc">如果有的話，告訴我們你希望的集資禮！（選填）</div>
+  <textarea class="survey-textarea" id="crowdfund-wish" placeholder="填寫你希望的集資禮…"></textarea>
+</div>
 
-    <!-- Q6: 其他意見 -->
-    <div class="q-card">
-      <div class="q-num">06 · 其他建議</div>
-      <div class="q-title">其他推薦應援 & 回饋意見</div>
-      <div class="q-desc">有任何想法或建議都歡迎告訴我們！（選填）</div>
-      <textarea class="survey-textarea" id="feedback" placeholder="例如：希望有 OO 應援、對 XX 項目有疑問…"></textarea>
-    </div>
+<!-- Q6: 其他意見 -->
+<div class="q-card">
+  <div class="q-num">06 · 其他建議</div>
+  <div class="q-title">其他推薦應援 & 回饋意見</div>
+  <div class="q-desc">有任何想法或建議都歡迎告訴我們！（選填）</div>
+  <textarea class="survey-textarea" id="feedback" placeholder="例如：希望有 OO 應援、對 XX 項目有疑問…"></textarea>
+</div>
 
-    <div class="submit-wrap">
-      <button class="submit-btn" id="submit-btn" onclick="submitSurvey()">送出意見</button>
-      <div class="submit-note">你的回饋將以匿名方式儲存</div>
-    </div>
+<div class="submit-wrap">
+  <button class="submit-btn" id="submit-btn" onclick="submitSurvey()">送出意見</button>
+  <div class="submit-note">你的回饋將以匿名方式儲存</div>
+</div>
+```
 
   </form>
 </div>
@@ -519,47 +531,55 @@ function initDrag(listId) {
   const list = document.getElementById(listId);
   let dragItem = null;
 
+  // === Desktop: HTML5 drag, but only from handle ===
   list.querySelectorAll('.rank-item').forEach(item => {
-    item.addEventListener('dragstart', e => {
+    const handle = item.querySelector('.rank-handle');
+
+    handle.addEventListener('dragstart', e => {
       dragItem = item;
+      // Firefox 需要 setData 才會觸發 drag
+      if(e.dataTransfer) { try { e.dataTransfer.setData('text/plain', ''); } catch(_){} }
       setTimeout(() => item.classList.add('dragging'), 0);
     });
-    item.addEventListener('dragend', () => {
+    handle.addEventListener('dragend', () => {
       item.classList.remove('dragging');
       list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      dragItem = null;
       updateRankNums(listId);
       updateProgress();
     });
     item.addEventListener('dragover', e => {
       e.preventDefault();
-      if(item !== dragItem) {
-        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-        item.classList.add('drag-over');
-        const rect = item.getBoundingClientRect();
-        const mid = rect.top + rect.height / 2;
-        if(e.clientY < mid) list.insertBefore(dragItem, item);
-        else list.insertBefore(dragItem, item.nextSibling);
-      }
+      if(!dragItem || item === dragItem) return;
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      item.classList.add('drag-over');
+      const rect = item.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if(e.clientY < mid) list.insertBefore(dragItem, item);
+      else list.insertBefore(dragItem, item.nextSibling);
     });
   });
 
-  // Touch support
+  // === Mobile: touch events, only from handle ===
   let touchDragItem = null;
-  let touchClone = null;
 
   list.querySelectorAll('.rank-item').forEach(item => {
-    item.addEventListener('touchstart', e => {
+    const handle = item.querySelector('.rank-handle');
+
+    handle.addEventListener('touchstart', e => {
+      e.preventDefault();
       touchDragItem = item;
       item.classList.add('dragging');
-    }, {passive: true});
+    }, {passive: false});
 
-    item.addEventListener('touchmove', e => {
+    handle.addEventListener('touchmove', e => {
+      if(!touchDragItem) return;
       e.preventDefault();
       const touch = e.touches[0];
       const el = document.elementFromPoint(touch.clientX, touch.clientY);
       if(!el) return;
       const target = el.closest('.rank-item');
-      if(target && target !== touchDragItem) {
+      if(target && target !== touchDragItem && list.contains(target)) {
         list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
         target.classList.add('drag-over');
         const rect = target.getBoundingClientRect();
@@ -568,12 +588,18 @@ function initDrag(listId) {
       }
     }, {passive: false});
 
-    item.addEventListener('touchend', () => {
+    handle.addEventListener('touchend', () => {
       if(touchDragItem) touchDragItem.classList.remove('dragging');
       list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
       touchDragItem = null;
       updateRankNums(listId);
       updateProgress();
+    });
+
+    handle.addEventListener('touchcancel', () => {
+      if(touchDragItem) touchDragItem.classList.remove('dragging');
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      touchDragItem = null;
     });
   });
 }
@@ -654,5 +680,6 @@ async function submitSurvey() {
   }
 }
 </script>
+
 </body>
 </html>
