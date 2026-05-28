@@ -279,6 +279,29 @@ input[type="range"]::-webkit-slider-thumb {
 .survey-textarea:focus { border-color: #7BA6DE; background: #fff; }
 .survey-textarea::placeholder { color: #9ca3af; }
 
+.survey-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #f9fafb;
+  color: #111827;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1.5 3.5h9z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  font-family: inherit;
+}
+.survey-select:focus { border-color: #7BA6DE; background-color: #fff; outline: none; }
+.survey-select option:disabled { color: #d1d5db; }
+
+.singalong-row { display: flex; flex-direction: column; gap: 6px; }
+.singalong-label { font-size: 13px; color: #6b7280; font-weight: 500; }
+
 /* SUBMIT */
 .submit-wrap {
   margin-top: 2rem;
@@ -498,8 +521,19 @@ input[type="range"]::-webkit-slider-thumb {
 <div class="q-card">
   <div class="q-num">06 · 清唱歌曲</div>
   <div class="q-title">請問清唱歌曲會想要哪首歌？</div>
-  <div class="q-desc">想聽大家一起清唱哪一首？歡迎多寫幾首！（選填）</div>
-  <textarea class="survey-textarea" id="singalong-song" placeholder="例如：FEARLESS、ANTIFRAGILE、Perfect Night…"></textarea>
+  <div class="q-desc">想聽大家一起清唱哪一首？選兩首最想要的（排優先順序）</div>
+  <div class="singalong-row">
+    <div class="singalong-label">第 1 順位（最想要）</div>
+    <select class="survey-select" id="singalong-1" onchange="updateSingalongOptions()">
+      <option value="">請選擇歌曲…</option>
+    </select>
+  </div>
+  <div class="singalong-row" style="margin-top:12px;">
+    <div class="singalong-label">第 2 順位</div>
+    <select class="survey-select" id="singalong-2" onchange="updateSingalongOptions()">
+      <option value="">請選擇歌曲…</option>
+    </select>
+  </div>
 </div>
 
 <!-- Q7: 其他意見 -->
@@ -629,6 +663,88 @@ function getRankOrder(listId) {
 initDrag('indoor-rank');
 initDrag('outdoor-rank');
 
+// SINGALONG SONGS
+const SINGALONG_SONGS = [
+  // FEARLESS (2022)
+  "The World Is My Oyster",
+  "FEARLESS ★",
+  "Blue Flame",
+  "The Great Mermaid",
+  "Sour Grapes",
+  // ANTIFRAGILE (2022)
+  "ANTIFRAGILE ★",
+  "Impurities",
+  "No Celestial",
+  "Good Parts (when the quality is bad but I am)",
+  // UNFORGIVEN (2023)
+  "UNFORGIVEN (feat. Nile Rodgers) ★",
+  "No-Return (Into the unknown)",
+  "이브, 프시케 그리고 푸른 수염의 아내",
+  "피어나 (Between you, me and the lamppost)",
+  "Flash Forward",
+  "Fire in the belly",
+  // Single (2023)
+  "Perfect Night ★",
+  // EASY (2024)
+  "EASY ★",
+  "Swan Song",
+  "Smart",
+  "We got so much",
+  // CRAZY (2024)
+  "Chasing Lightning",
+  "CRAZY ★",
+  "Pierrot",
+  "1-800-hot-n-fun",
+  "Crazier (미치지 못하는 이유)",
+  // HOT (2025)
+  "HOT ★",
+  "Come Over",
+  "Ash",
+  "So Cynical (Badum)",
+  // SPAGHETTI (2025)
+  "SPAGHETTI (feat. j-hope of BTS) ★",
+  "Pearlies (My Oyster Is the World)",
+  // PUREFLOW Pt.1 (2026)
+  "BOOMPALA ★",
+  "CELEBRATION",
+  "Creatures",
+  "iffy iffy",
+  "우리 어떻게 더 사귈 수 있을까 (Need Your Company)",
+  "Sonder",
+  "Saki (feat. Aliyah's Interlude)",
+  "Irony",
+  "Trust Exercise",
+  "Liminal Space"
+];
+
+function populateSongSelect(selectId) {
+  const sel = document.getElementById(selectId);
+  SINGALONG_SONGS.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name.replace(' ★', '');  // 儲存時不含 ★
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+}
+
+function updateSingalongOptions() {
+  const sel1 = document.getElementById('singalong-1');
+  const sel2 = document.getElementById('singalong-2');
+  const v1 = sel1.value;
+  const v2 = sel2.value;
+  // 互斥：兩個 select 都不能選到對方已選的歌
+  Array.from(sel1.options).forEach(opt => {
+    opt.disabled = (opt.value !== '' && opt.value === v2);
+  });
+  Array.from(sel2.options).forEach(opt => {
+    opt.disabled = (opt.value !== '' && opt.value === v1);
+  });
+  updateProgress();
+}
+
+populateSongSelect('singalong-1');
+populateSongSelect('singalong-2');
+
 // PROGRESS
 function updateProgress() {
   const ratio = document.getElementById('ratio-slider').value !== '50' ? 1 : 0;
@@ -655,7 +771,8 @@ async function submitSurvey() {
     outdoor_rank: getRankOrder('outdoor-rank'),
     outdoor_activity: document.getElementById('outdoor-activity').value.trim() || null,
     crowdfund_wish: document.getElementById('crowdfund-wish').value.trim() || null,
-    singalong_song: document.getElementById('singalong-song').value.trim() || null,
+    singalong_first: document.getElementById('singalong-1').value || null,
+    singalong_second: document.getElementById('singalong-2').value || null,
     feedback: document.getElementById('feedback').value.trim() || null,
     submitted_at: new Date().toISOString()
   };
