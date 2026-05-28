@@ -391,8 +391,8 @@ input[type="range"]::-webkit-slider-thumb {
 <!-- Q1: 比例滑桿 -->
 <div class="q-card">
   <div class="q-num">01 · 場內 / 場外比例</div>
-  <div class="q-title">你希望資源分配的比例是？</div>
-  <div class="q-desc">拖動滑桿調整場內和場外應援的資源比例</div>
+  <div class="q-title">你希望集資金額分配的比例是？</div>
+  <div class="q-desc">拖動滑桿調整場內和場外應援的集資金額比例</div>
   <div class="slider-wrap">
     <div class="slider-value">
       <span class="big" id="indoor-pct">50</span>% 場內 &nbsp;·&nbsp; <span class="big" id="outdoor-pct">50</span>% 場外
@@ -494,9 +494,17 @@ input[type="range"]::-webkit-slider-thumb {
   <textarea class="survey-textarea" id="crowdfund-wish" placeholder="填寫你希望的集資禮…"></textarea>
 </div>
 
-<!-- Q6: 其他意見 -->
+<!-- Q6: 清唱歌曲 -->
 <div class="q-card">
-  <div class="q-num">06 · 其他建議</div>
+  <div class="q-num">06 · 清唱歌曲</div>
+  <div class="q-title">請問清唱歌曲會想要哪首歌？</div>
+  <div class="q-desc">想聽大家一起清唱哪一首？歡迎多寫幾首！（選填）</div>
+  <textarea class="survey-textarea" id="singalong-song" placeholder="例如：FEARLESS、ANTIFRAGILE、Perfect Night…"></textarea>
+</div>
+
+<!-- Q7: 其他意見 -->
+<div class="q-card">
+  <div class="q-num">07 · 其他建議</div>
   <div class="q-title">其他推薦應援 & 回饋意見</div>
   <div class="q-desc">有任何想法或建議都歡迎告訴我們！（選填）</div>
   <textarea class="survey-textarea" id="feedback" placeholder="例如：希望有 OO 應援、對 XX 項目有疑問…"></textarea>
@@ -647,6 +655,7 @@ async function submitSurvey() {
     outdoor_rank: getRankOrder('outdoor-rank'),
     outdoor_activity: document.getElementById('outdoor-activity').value.trim() || null,
     crowdfund_wish: document.getElementById('crowdfund-wish').value.trim() || null,
+    singalong_song: document.getElementById('singalong-song').value.trim() || null,
     feedback: document.getElementById('feedback').value.trim() || null,
     submitted_at: new Date().toISOString()
   };
