@@ -230,11 +230,11 @@
       </div>
     </div>
 
-    <!-- Step 5: 轉帳 -->
+    <!-- Step 5: 轉帳 + 確認後五碼（合併） -->
     <div class="step" id="step-5">
       <div class="step-number" id="step5-num">4</div>
       <div class="question">請完成轉帳</div>
-      <div class="question-desc">請依以下資訊完成轉帳後再進行下一步</div>
+      <div class="question-desc">請依以下資訊完成轉帳，並填寫轉帳後五碼</div>
       <div class="countdown-bar" id="countdown-bar">
         <span>付款時限</span>
         <span class="countdown-timer" id="countdown-timer">10:00</span>
@@ -250,14 +250,9 @@
           <button class="copy-btn" id="copy-btn" onclick="copyAccount()">複製</button>
         </div>
       </div>
-      <button class="next-btn" onclick="goTo(6)">已完成轉帳，繼續 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
-    </div>
-
-    <!-- Step 6: 轉帳確認+後五碼 -->
-    <div class="step" id="step-6">
-      <div class="step-number" id="step6-num">5</div>
-      <div class="question">請確認轉帳狀態 *</div>
-      <div class="question-desc">請確認已完成轉帳方可繼續報名</div>
+      <div style="height:1.5rem"></div>
+      <div class="question" style="font-size:18px;margin-bottom:0.5rem">請確認轉帳狀態 *</div>
+      <div class="question-desc" style="margin-bottom:1rem">請確認已完成轉帳方可繼續報名</div>
       <div class="confirm-row" id="confirm-yes" onclick="selectConfirm()">
         <div class="check-circle">✓</div>是，我已完成轉帳
       </div>
@@ -265,14 +260,14 @@
       <div style="height:1.5rem"></div>
       <div class="question" style="font-size:18px;margin-bottom:0.5rem">請填寫轉帳後五碼 *</div>
       <div class="question-desc" style="margin-bottom:1rem">請輸入您匯款帳號的後五碼</div>
-      <input class="text-input" type="text" id="transfer-code" maxlength="5" placeholder="例：12345" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <input class="text-input" type="text" id="transfer-code" maxlength="5" placeholder="例：12345" inputmode="numeric" oninput="onCodeInput(this)">
       <span class="error-msg" id="err-code">請填寫正確的 5 碼數字</span>
-      <button class="next-btn" onclick="nextFromConfirm()">確認 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+      <button class="next-btn" id="transfer-next-btn" onclick="nextFromConfirm()" style="display:none;">已完成轉帳，繼續 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
     </div>
 
     <!-- Step 7: Email -->
     <div class="step" id="step-7">
-      <div class="step-number" id="step7-num">6</div>
+      <div class="step-number" id="step7-num">5</div>
       <div class="question">請填寫電子郵件 *</div>
       <div class="question-desc">務必填寫可聯絡信箱，確認通知將寄送至此</div>
       <input class="text-input" type="email" id="email-input" placeholder="yourname@email.com">
@@ -282,7 +277,7 @@
 
     <!-- Step 8: 暱稱 -->
     <div class="step" id="step-8">
-      <div class="step-number" id="step8-num">7</div>
+      <div class="step-number" id="step8-num">6</div>
       <div class="question">請填寫暱稱 *</div>
       <div class="question-desc">您希望我們如何稱呼您？</div>
       <input class="text-input" type="text" id="nick-input" placeholder="請輸入您的暱稱">
@@ -415,6 +410,14 @@
 
   function startCountdown() {
     clearInterval(countdownInterval);
+    // 重置確認狀態與後五碼輸入
+    state.confirmed = false; state.code = '';
+    const codeInput = document.getElementById('transfer-code');
+    if (codeInput) codeInput.value = '';
+    document.getElementById('confirm-yes').classList.remove('selected');
+    document.getElementById('err-confirm').classList.remove('show');
+    document.getElementById('err-code').classList.remove('show');
+    document.getElementById('transfer-next-btn').style.display = 'none';
     let remaining = COUNTDOWN_SECS;
     const timerEl = document.getElementById('countdown-timer');
     const fillEl = document.getElementById('countdown-fill');
@@ -789,6 +792,20 @@
     state.confirmed=true;
     document.getElementById('confirm-yes').classList.add('selected');
     document.getElementById('err-confirm').classList.remove('show');
+    updateTransferBtn();
+  }
+
+  function onCodeInput(el) {
+    el.value = el.value.replace(/[^0-9]/g,'');
+    document.getElementById('err-code').classList.remove('show');
+    updateTransferBtn();
+  }
+
+  // 後五碼滿 5 碼才顯示繼續按鈕
+  function updateTransferBtn() {
+    const code = document.getElementById('transfer-code').value.trim();
+    const btn = document.getElementById('transfer-next-btn');
+    btn.style.display = code.length === 5 ? '' : 'none';
   }
 
   function nextFromConfirm() {
