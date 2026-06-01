@@ -40,6 +40,9 @@
     .choice-letter { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; opacity: 0.7; }
     .choice-badge { margin-left: auto; font-size: 11px; font-weight: 500; background: var(--fn-blue); color: #fff; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; }
     .choice-btn.selected .choice-badge { background: var(--fn-blue-dark); }
+    .choice-btn.soldout { border-color: var(--border); background: var(--bg-secondary); color: var(--text-muted); cursor: not-allowed; opacity: 0.55; }
+    .choice-btn.soldout:hover { border-color: var(--border); background: var(--bg-secondary); color: var(--text-muted); }
+    .choice-btn .soldout-badge { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--text-muted); background: var(--bg); padding: 2px 8px; border-radius: 20px; }
     .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-bottom: 2rem; }
     .time-btn { padding: 12px 8px; border: 1.5px solid var(--border); border-radius: var(--radius-md); background: var(--bg); cursor: pointer; font-size: 14px; color: var(--text); text-align: center; transition: border-color 0.15s, background 0.15s, color 0.15s; }
     .time-btn:hover, .time-btn.selected { border-color: var(--fn-blue); background: var(--fn-blue-light); color: var(--fn-blue-dark); font-weight: 500; }
@@ -486,12 +489,41 @@
       buildNightOnlyGrid();
       showStep('4b'); updateProgress(28);
     } else {
+      applyDateSoldout();
       showStep('3'); updateProgress(20);
     }
   }
 
+  // 判斷某日期是否全時段完售
+  function isDateSoldout(d) {
+    const cfg = DATE_CONFIG[d];
+    return cfg.times.every(t => (slotCounts[cfg.label+'|'+t] || 0) >= MAX_PER_SLOT);
+  }
+
+  // 套用日期完售標示
+  function applyDateSoldout() {
+    ['4/30','5/1','5/2'].forEach((d,i) => {
+      const btn = document.getElementById('date-'+i);
+      if (!btn) return;
+      if (isDateSoldout(d)) {
+        btn.classList.add('soldout'); btn.classList.remove('selected');
+        if (!btn.querySelector('.soldout-badge')) {
+          const tag = document.createElement('span');
+          tag.className='soldout-badge'; tag.textContent='已額滿';
+          btn.appendChild(tag);
+        }
+        if (state.date === d) state.date = null;
+      } else {
+        btn.classList.remove('soldout');
+        const tag = btn.querySelector('.soldout-badge');
+        if (tag) tag.remove();
+      }
+    });
+  }
+
   // Step 3: 選日期
   function selectDate(d) {
+    if (isDateSoldout(d)) return;
     state.date = d;
     ['4/30','5/1','5/2'].forEach((v,i) => {
       document.getElementById('date-'+i).classList.toggle('selected', v===d);
@@ -605,8 +637,19 @@
         section.style.display = 'block';
         // both 模式顯示之夜加購
         if (state.type === 'both') {
-          document.getElementById('night-remaining').textContent = '五週年之夜剩餘 '+nightRemaining+' 位';
-          buildNightAddonGrid(nightRemaining);
+          const addonGrid = document.getElementById('night-people-grid');
+          const addonErr = document.getElementById('err-night-people');
+          const nrEl = document.getElementById('night-remaining');
+          if (nightRemaining <= 0) {
+            // 之夜額滿，無法加購
+            state.nightPeople = 0;
+            nrEl.textContent = '已額滿';
+            addonGrid.innerHTML = '<div style="font-size:13px;color:var(--text-muted);line-height:1.7;padding:4px 0;">五週年之夜名額皆已額滿，無法加購。<br>您仍可繼續完成展覽報名 ✦</div>';
+            if (addonErr) addonErr.classList.remove('show');
+          } else {
+            nrEl.textContent = '五週年之夜剩餘 '+nightRemaining+' 位';
+            buildNightAddonGrid(nightRemaining);
+          }
           document.getElementById('night-addon-section').style.display = 'block';
         }
         setTimeout(()=>section.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
@@ -639,7 +682,7 @@
   async function nextFromTime() {
     if (!state.time) { document.getElementById('err-time').classList.add('show'); return; }
     if (!state.people) { document.getElementById('err-people').classList.add('show'); return; }
-    if (state.type==='both' && !state.nightPeople) { document.getElementById('err-night-people').classList.add('show'); return; }
+    if (state.type==='both' && nightRemaining > 0 && !state.nightPeople) { document.getElementById('err-night-people').classList.add('show'); return; }
 
     const btn = document.querySelector('[onclick="nextFromTime()"]');
     const origHTML = btn ? btn.innerHTML : '';
@@ -757,7 +800,7 @@
 
   function showPreSummary() {
     const rows = [];
-    const typeLabel = state.type==='exhibition'?'五週年應援展覽':state.type==='night'?'LE SSERAFIM 五週年之夜':'展覽 + 五週年之夜';
+    const typeLabel = state.type==='exhibition'?'五週年應援展覽':state.type==='night'?'LE SSERAFIM 五週年之夜':(state.nightPeople?'展覽 + 五週年之夜':'五週年應援展覽（之夜已額滿）');
     rows.push(['報名項目', typeLabel]);
     if (state.date) rows.push(['參展日期', DATE_CONFIG[state.date].label]);
     if (state.time) rows.push(['入場時段', state.time]);
@@ -808,7 +851,7 @@
 
   function showFinalSummary() {
     const rows = [];
-    const typeLabel = state.type==='exhibition'?'五週年應援展覽':state.type==='night'?'LE SSERAFIM 五週年之夜':'展覽 + 五週年之夜';
+    const typeLabel = state.type==='exhibition'?'五週年應援展覽':state.type==='night'?'LE SSERAFIM 五週年之夜':(state.nightPeople?'展覽 + 五週年之夜':'五週年應援展覽（之夜已額滿）');
     rows.push(['報名項目', typeLabel]);
     if (state.date) rows.push(['日期', DATE_CONFIG[state.date].label]);
     if (state.time) rows.push(['時段', state.time]);
