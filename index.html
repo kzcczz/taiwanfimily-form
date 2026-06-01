@@ -644,10 +644,23 @@
             // 之夜額滿，無法加購
             state.nightPeople = 0;
             nrEl.textContent = '已額滿';
-            addonGrid.innerHTML = '<div style="font-size:13px;color:var(--text-muted);line-height:1.7;padding:4px 0;">五週年之夜名額皆已額滿，無法加購。<br>您仍可繼續完成展覽報名 ✦</div>';
+            addonGrid.innerHTML = '';
+            addonGrid.style.display = 'none';
+            let msg = document.getElementById('night-addon-full-msg');
+            if (!msg) {
+              msg = document.createElement('div');
+              msg.id = 'night-addon-full-msg';
+              msg.style.cssText = 'font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;';
+              addonGrid.parentNode.insertBefore(msg, addonGrid);
+            }
+            msg.innerHTML = '五週年之夜名額皆已額滿，無法加購。<br>您仍可繼續完成展覽報名 ✦';
+            msg.style.display = 'block';
             if (addonErr) addonErr.classList.remove('show');
           } else {
             nrEl.textContent = '五週年之夜剩餘 '+nightRemaining+' 位';
+            addonGrid.style.display = '';
+            const oldMsg = document.getElementById('night-addon-full-msg');
+            if (oldMsg) oldMsg.style.display = 'none';
             buildNightAddonGrid(nightRemaining);
           }
           document.getElementById('night-addon-section').style.display = 'block';
