@@ -207,12 +207,24 @@
 
     <!-- Step 4b: 只報五週年之夜的人數選擇 -->
     <div class="step" id="step-4b">
-      <div class="step-number">2</div>
-      <div class="question">請選擇報名人數 *</div>
-      <div class="question-desc" id="step4b-desc">五週年之夜 — NT$520／人</div>
-      <div class="people-grid" id="night-only-grid"></div>
-      <span class="error-msg" id="err-night-only">請選擇報名人數</span>
-      <button class="next-btn" onclick="nextFromNightOnly()">確認 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+      <!-- 正常選人數 -->
+      <div id="night-only-normal">
+        <div class="step-number">2</div>
+        <div class="question">請選擇報名人數 *</div>
+        <div class="question-desc" id="step4b-desc">五週年之夜 — NT$520／人</div>
+        <div class="people-grid" id="night-only-grid"></div>
+        <span class="error-msg" id="err-night-only">請選擇報名人數</span>
+        <button class="next-btn" onclick="nextFromNightOnly()">確認 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+      </div>
+      <!-- 額滿 -->
+      <div id="night-only-full" style="display:none;padding:2rem 0 1rem;text-align:center;">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--bg-secondary);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:28px;height:28px;color:var(--text-muted)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        </div>
+        <div style="font-size:24px;font-weight:500;color:var(--text);margin-bottom:1rem;">五週年之夜已額滿</div>
+        <div style="font-size:15px;color:var(--text-muted);line-height:1.8;max-width:360px;margin:0 auto 1.75rem;">五週年之夜名額皆已額滿。<br>您仍可報名五週年應援展覽，期待與您相見 ✦</div>
+        <button class="next-btn" onclick="backToType()">回報名首頁 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 8H3M7 4L3 8l4 4"/></svg></button>
+      </div>
     </div>
 
     <!-- Step 5: 轉帳 -->
@@ -552,6 +564,16 @@
   }
 
   function buildNightOnlyGrid() {
+    const normal = document.getElementById('night-only-normal');
+    const full = document.getElementById('night-only-full');
+    // 額滿：顯示已額滿與回首頁
+    if (nightRemaining <= 0) {
+      normal.style.display = 'none';
+      full.style.display = 'block';
+      return;
+    }
+    normal.style.display = 'block';
+    full.style.display = 'none';
     const g = document.getElementById('night-only-grid'); g.innerHTML = '';
     const max = Math.min(nightRemaining, 5);
     document.getElementById('step4b-desc').textContent = '五週年之夜 — NT$520／人，剩餘 '+nightRemaining+' 位';
@@ -561,6 +583,12 @@
       b.onclick = () => selectNightOnly(i);
       g.appendChild(b);
     }
+  }
+
+  function backToType() {
+    state.nightPeople = null;
+    document.getElementById('err-night-only').classList.remove('show');
+    goTo(2);
   }
 
   function selectTime(t) {
