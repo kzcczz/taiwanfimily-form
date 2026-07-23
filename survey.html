@@ -97,6 +97,28 @@ body {
   margin-bottom: 1.25rem;
 }
 
+.req {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 11px;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.survey-textarea.error { border-color: #dc2626 !important; background: #fef2f2; }
+
+.err-msg {
+  display: none;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #dc2626;
+}
+.err-msg.show { display: block; }
+
 .q-num {
   font-size: 11px;
   font-weight: 500;
@@ -419,7 +441,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 <!-- Q1: 場內排序 -->
 <div class="q-card">
-  <div class="q-num">01 · 場內應援</div>
+  <div class="q-num">01 · 場內應援 <span class="req">必填</span></div>
   <div class="q-title">場內應援項目，請依意願排序</div>
   <div class="q-desc">第 1 名為最希望看到的項目</div>
   <div class="rank-hint">☰ 拖曳項目調整順序</div>
@@ -444,25 +466,28 @@ input[type="range"]::-webkit-slider-thumb {
 
 <!-- Q2: 場內應援建議 -->
 <div class="q-card">
-  <div class="q-num">02 · 場內應援</div>
+  <div class="q-num">02 · 場內應援 <span class="req">必填</span></div>
   <div class="q-title">有什麼希望做的「場內應援」嗎？</div>
   <textarea class="survey-textarea" id="outdoor-activity" placeholder="填寫你希望的場內應援內容…"></textarea>
+  <div class="err-msg" id="err-outdoor-activity">此題為必填</div>
 </div>
 
 <!-- Q3: 排字應援募集 -->
 <div class="q-card">
-  <div class="q-num">03 · 排字應援募集</div>
+  <div class="q-num">03 · 排字應援募集 <span class="req">必填</span></div>
   <div class="q-title">排字應援募集 10~12 個字的韓文 / 英文 / 符號</div>
-  <div class="q-desc">例：FEARNOT ♥ LS　共 10 字（選填）</div>
+  <div class="q-desc">例：FEARNOT ♥ LS　共 10 字</div>
   <textarea class="survey-textarea" id="crowdfund-wish" placeholder="填寫你想要的排字內容…"></textarea>
+  <div class="err-msg" id="err-crowdfund-wish">請輸入 10~12 個字</div>
 </div>
 
 <!-- Q4: 其他意見 -->
 <div class="q-card">
-  <div class="q-num">04 · 其他建議</div>
+  <div class="q-num">04 · 其他建議 <span class="req">必填</span></div>
   <div class="q-title">其他推薦應援 & 回饋意見</div>
-  <div class="q-desc">有任何想法或建議都歡迎告訴我們！（選填）</div>
+  <div class="q-desc">有任何想法或建議都歡迎告訴我們！</div>
   <textarea class="survey-textarea" id="feedback" placeholder="例如：希望有 OO 應援、對 XX 項目有疑問…"></textarea>
+  <div class="err-msg" id="err-feedback">此題為必填</div>
 </div>
 
 <div class="submit-wrap">
@@ -586,8 +611,65 @@ document.getElementById('outdoor-activity').addEventListener('input', updateProg
 document.getElementById('crowdfund-wish').addEventListener('input', updateProgress);
 updateProgress();
 
+['outdoor-activity','crowdfund-wish','feedback'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => clearErr(id));
+});
+
 // SUBMIT
+function showErr(id, msg) {
+  const ta = document.getElementById(id);
+  const err = document.getElementById('err-' + id);
+  ta.classList.add('error');
+  if(msg) err.textContent = msg;
+  err.classList.add('show');
+}
+
+function clearErr(id) {
+  document.getElementById(id).classList.remove('error');
+  document.getElementById('err-' + id).classList.remove('show');
+}
+
+function validateForm() {
+  let ok = true;
+  let firstBad = null;
+
+  ['outdoor-activity','crowdfund-wish','feedback'].forEach(id => clearErr(id));
+
+  const act = document.getElementById('outdoor-activity').value.trim();
+  if(!act) {
+    showErr('outdoor-activity', '此題為必填');
+    ok = false;
+    firstBad = firstBad || 'outdoor-activity';
+  }
+
+  const wish = document.getElementById('crowdfund-wish').value.trim();
+  const len = Array.from(wish).length;
+  if(!wish) {
+    showErr('crowdfund-wish', '此題為必填');
+    ok = false;
+    firstBad = firstBad || 'crowdfund-wish';
+  } else if(len < 10 || len > 12) {
+    showErr('crowdfund-wish', '請輸入 10~12 個字（目前 ' + len + ' 字）');
+    ok = false;
+    firstBad = firstBad || 'crowdfund-wish';
+  }
+
+  const fb = document.getElementById('feedback').value.trim();
+  if(!fb) {
+    showErr('feedback', '此題為必填');
+    ok = false;
+    firstBad = firstBad || 'feedback';
+  }
+
+  if(firstBad) {
+    document.getElementById(firstBad).scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  return ok;
+}
+
 async function submitSurvey() {
+  if(!validateForm()) return;
+
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.textContent = '送出中…';
