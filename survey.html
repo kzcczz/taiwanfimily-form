@@ -657,24 +657,62 @@ function buildCharGrid() {
     const input = document.createElement('input');
     input.type = 'text';
     input.className = 'char-box' + (i >= CHAR_REQUIRED ? ' optional' : '');
-    input.maxLength = 1;
     input.dataset.idx = i;
     input.setAttribute('autocomplete', 'off');
     input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('lang', 'ko');
 
-    input.addEventListener('input', () => {
+    // IME 組字狀態（韓文 ㅅ + ㅏ = 사 需要多次按鍵）
+    input.composing = false;
+
+    input.addEventListener('compositionstart', () => {
+      input.composing = true;
+    });
+
+    input.addEventListener('compositionend', () => {
+      input.composing = false;
+      // 組字完成後才裁切成一個字，並跳下一格
       const chars = Array.from(input.value);
-      if(chars.length > 1) input.value = chars[chars.length - 1];
+      if(chars.length > 1) {
+        const overflow = chars.slice(1);
+        input.value = chars[0];
+        // 多出來的字往後面格子塞
+        for(let j = 0; j < overflow.length && i + 1 + j < CHAR_TOTAL; j++) {
+          grid.children[i + 1 + j].value = overflow[j];
+        }
+      }
       if(input.value && i < CHAR_TOTAL - 1) {
         grid.children[i + 1].focus();
       }
       updateCharCount();
-      document.getElementById('char-grid').classList.remove('error');
-      document.getElementById('err-crowdfund-wish').classList.remove('show');
+      clearGridErr();
+      updateProgress();
+    });
+
+    input.addEventListener('input', () => {
+      // 組字中不做任何裁切／跳格，讓 ㅅ 有機會變成 사
+      if(input.composing) {
+        updateCharCount();
+        return;
+      }
+      const chars = Array.from(input.value);
+      if(chars.length > 1) {
+        const overflow = chars.slice(1);
+        input.value = chars[0];
+        for(let j = 0; j < overflow.length && i + 1 + j < CHAR_TOTAL; j++) {
+          grid.children[i + 1 + j].value = overflow[j];
+        }
+      }
+      if(input.value && i < CHAR_TOTAL - 1) {
+        grid.children[i + 1].focus();
+      }
+      updateCharCount();
+      clearGridErr();
       updateProgress();
     });
 
     input.addEventListener('keydown', e => {
+      if(input.composing) return;
       if(e.key === 'Backspace' && !input.value && i > 0) {
         e.preventDefault();
         const prev = grid.children[i - 1];
@@ -685,6 +723,15 @@ function buildCharGrid() {
       }
       if(e.key === 'ArrowLeft' && i > 0) grid.children[i - 1].focus();
       if(e.key === 'ArrowRight' && i < CHAR_TOTAL - 1) grid.children[i + 1].focus();
+    });
+
+    // 失焦時保險：確保只留一個字
+    input.addEventListener('blur', () => {
+      input.composing = false;
+      const chars = Array.from(input.value);
+      if(chars.length > 1) input.value = chars[0];
+      updateCharCount();
+      updateProgress();
     });
 
     input.addEventListener('paste', e => {
@@ -704,8 +751,14 @@ function buildCharGrid() {
   }
 }
 
+function clearGridErr() {
+  document.getElementById('char-grid').classList.remove('error');
+  document.getElementById('err-crowdfund-wish').classList.remove('show');
+}
+
 function getCharArray() {
-  return Array.from(document.getElementById('char-grid').children).map(el => el.value);
+  return Array.from(document.getElementById('char-grid').children)
+    .map(el => Array.from(el.value)[0] || '');
 }
 
 function getCharCount() {
