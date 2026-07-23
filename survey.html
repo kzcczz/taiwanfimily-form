@@ -97,6 +97,55 @@ body {
   margin-bottom: 1.25rem;
 }
 
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.char-box {
+  width: 100%;
+  aspect-ratio: 1;
+  text-align: center;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #111827;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  padding: 0;
+}
+
+.char-box:focus {
+  border-color: #5B9BD5;
+  box-shadow: 0 0 0 3px rgba(91,155,213,.15);
+}
+
+.char-box.optional { border-style: dashed; background: #fafafa; }
+
+.char-grid.error .char-box { border-color: #dc2626; }
+
+.char-count {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .char-grid { gap: 3px; }
+  .char-box { font-size: 15px; border-radius: 6px; }
+}
+
+@media (max-width: 400px) {
+  .char-grid { gap: 2px; }
+  .char-box { font-size: 13px; border-width: 1px; border-radius: 5px; }
+}
+
 .req {
   display: inline-block;
   margin-left: 6px;
@@ -476,8 +525,9 @@ input[type="range"]::-webkit-slider-thumb {
 <div class="q-card">
   <div class="q-num">03 · 排字應援募集 <span class="req">必填</span></div>
   <div class="q-title">排字應援募集 10~12 個字的韓文 / 英文 / 符號</div>
-  <div class="q-desc">例：FEARNOT ♥ LS　共 10 字</div>
-  <textarea class="survey-textarea" id="crowdfund-wish" placeholder="填寫你想要的排字內容…"></textarea>
+  <div class="q-desc">一格填一個字，前 10 格必填，後 2 格可留空。空格也算一個字。<br>例：F E A R N O T ␣ ♥ ␣ L S　共 12 字</div>
+  <div class="char-grid" id="char-grid"></div>
+  <div class="char-count"><span id="char-count-num">0</span> / 12 字</div>
   <div class="err-msg" id="err-crowdfund-wish">請輸入 10~12 個字</div>
 </div>
 
@@ -597,10 +647,86 @@ function getRankOrder(listId) {
 
 initDrag('indoor-rank');
 
+// CHAR GRID
+const CHAR_TOTAL = 12;
+const CHAR_REQUIRED = 10;
+
+function buildCharGrid() {
+  const grid = document.getElementById('char-grid');
+  for(let i = 0; i < CHAR_TOTAL; i++) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'char-box' + (i >= CHAR_REQUIRED ? ' optional' : '');
+    input.maxLength = 1;
+    input.dataset.idx = i;
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('autocapitalize', 'off');
+
+    input.addEventListener('input', () => {
+      const chars = Array.from(input.value);
+      if(chars.length > 1) input.value = chars[chars.length - 1];
+      if(input.value && i < CHAR_TOTAL - 1) {
+        grid.children[i + 1].focus();
+      }
+      updateCharCount();
+      document.getElementById('char-grid').classList.remove('error');
+      document.getElementById('err-crowdfund-wish').classList.remove('show');
+      updateProgress();
+    });
+
+    input.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' && !input.value && i > 0) {
+        e.preventDefault();
+        const prev = grid.children[i - 1];
+        prev.value = '';
+        prev.focus();
+        updateCharCount();
+        updateProgress();
+      }
+      if(e.key === 'ArrowLeft' && i > 0) grid.children[i - 1].focus();
+      if(e.key === 'ArrowRight' && i < CHAR_TOTAL - 1) grid.children[i + 1].focus();
+    });
+
+    input.addEventListener('paste', e => {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text');
+      const chars = Array.from(text);
+      for(let j = 0; j < chars.length && i + j < CHAR_TOTAL; j++) {
+        grid.children[i + j].value = chars[j];
+      }
+      const last = Math.min(i + chars.length, CHAR_TOTAL - 1);
+      grid.children[last].focus();
+      updateCharCount();
+      updateProgress();
+    });
+
+    grid.appendChild(input);
+  }
+}
+
+function getCharArray() {
+  return Array.from(document.getElementById('char-grid').children).map(el => el.value);
+}
+
+function getCharCount() {
+  return getCharArray().filter(c => c !== '').length;
+}
+
+function getCharText() {
+  return getCharArray().join('');
+}
+
+function updateCharCount() {
+  document.getElementById('char-count-num').textContent = getCharCount();
+}
+
+buildCharGrid();
+updateCharCount();
+
 // PROGRESS
 function updateProgress() {
   const a = document.getElementById('outdoor-activity').value.trim() ? 1 : 0;
-  const b = document.getElementById('crowdfund-wish').value.trim() ? 1 : 0;
+  const b = getCharCount() >= 10 ? 1 : 0;
   const c = document.getElementById('feedback').value.trim() ? 1 : 0;
   const pct = Math.round(((1 + a + b + c) / 4) * 100);
   document.getElementById('progress').style.width = pct + '%';
@@ -608,10 +734,9 @@ function updateProgress() {
 
 document.getElementById('feedback').addEventListener('input', updateProgress);
 document.getElementById('outdoor-activity').addEventListener('input', updateProgress);
-document.getElementById('crowdfund-wish').addEventListener('input', updateProgress);
 updateProgress();
 
-['outdoor-activity','crowdfund-wish','feedback'].forEach(id => {
+['outdoor-activity','feedback'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => clearErr(id));
 });
 
@@ -633,7 +758,7 @@ function validateForm() {
   let ok = true;
   let firstBad = null;
 
-  ['outdoor-activity','crowdfund-wish','feedback'].forEach(id => clearErr(id));
+  ['outdoor-activity','feedback'].forEach(id => clearErr(id));
 
   const act = document.getElementById('outdoor-activity').value.trim();
   if(!act) {
@@ -642,16 +767,17 @@ function validateForm() {
     firstBad = firstBad || 'outdoor-activity';
   }
 
-  const wish = document.getElementById('crowdfund-wish').value.trim();
-  const len = Array.from(wish).length;
-  if(!wish) {
-    showErr('crowdfund-wish', '此題為必填');
+  const grid = document.getElementById('char-grid');
+  const errWish = document.getElementById('err-crowdfund-wish');
+  grid.classList.remove('error');
+  errWish.classList.remove('show');
+  const filled = getCharCount();
+  if(filled < 10) {
+    grid.classList.add('error');
+    errWish.textContent = '前 10 格為必填（目前 ' + filled + ' 字）';
+    errWish.classList.add('show');
     ok = false;
-    firstBad = firstBad || 'crowdfund-wish';
-  } else if(len < 10 || len > 12) {
-    showErr('crowdfund-wish', '請輸入 10~12 個字（目前 ' + len + ' 字）');
-    ok = false;
-    firstBad = firstBad || 'crowdfund-wish';
+    firstBad = firstBad || 'char-grid';
   }
 
   const fb = document.getElementById('feedback').value.trim();
@@ -677,7 +803,7 @@ async function submitSurvey() {
   const data = {
     indoor_rank: getRankOrder('indoor-rank'),
     outdoor_activity: document.getElementById('outdoor-activity').value.trim() || null,
-    crowdfund_wish: document.getElementById('crowdfund-wish').value.trim() || null,
+    crowdfund_wish: getCharText().trim() || null,
     feedback: document.getElementById('feedback').value.trim() || null,
     submitted_at: new Date().toISOString()
   };
