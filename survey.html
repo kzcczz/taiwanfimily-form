@@ -97,6 +97,225 @@ body {
   margin-bottom: 1.25rem;
 }
 
+.origin-note {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #78350f;
+}
+
+.origin-note-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: .02em;
+}
+
+.origin-note-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: decimal;
+}
+
+.origin-note-list li { margin-bottom: 3px; }
+.origin-note-list li:last-child { margin-bottom: 0; }
+
+.char-grid-15 { grid-template-columns: repeat(15, 1fr); }
+
+@media (max-width: 560px) {
+  .char-grid-15 { grid-template-columns: repeat(8, 1fr); }
+}
+
+.trans-row {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.trans-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.trans-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  color: #111827;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.trans-input::placeholder { color: #9ca3af; }
+
+.trans-input:focus {
+  border-color: #5B9BD5;
+  box-shadow: 0 0 0 3px rgba(91,155,213,.15);
+}
+
+.trans-input.error { border-color: #dc2626 !important; background: #fef2f2; }
+
+.plan-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.plan-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.plan-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #5B9BD5;
+  color: #fff;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.plan-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e40af;
+  letter-spacing: .02em;
+}
+
+.plan-section {
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.plan-section:last-child { border-bottom: none; padding-bottom: 0; }
+
+.plan-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: .06em;
+  margin-bottom: 7px;
+}
+
+.plan-body {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #334155;
+}
+
+.plan-line {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.plan-line:last-child { margin-bottom: 0; }
+
+.plan-key {
+  flex-shrink: 0;
+  width: 82px;
+  font-weight: 600;
+  color: #5B9BD5;
+}
+
+.plan-body p {
+  margin: 0 0 8px;
+}
+
+.plan-body p:last-child { margin-bottom: 0; }
+
+.plan-birthday .plan-label { color: #d97706; }
+
+.plan-birthday .plan-body strong {
+  color: #b45309;
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .plan-card { padding: 16px; }
+  .plan-body { font-size: 13px; }
+  .plan-line { flex-direction: column; gap: 1px; margin-bottom: 9px; }
+  .plan-key { width: auto; }
+}
+
+.notice-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 3px solid #5B9BD5;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.notice-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.notice-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #5B9BD5;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.notice-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e40af;
+  letter-spacing: .02em;
+}
+
+.notice-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: decimal;
+}
+
+.notice-list li {
+  font-size: 13px;
+  line-height: 1.75;
+  color: #475569;
+  margin-bottom: 9px;
+}
+
+.notice-list li:last-child { margin-bottom: 0; }
+
+.notice-list strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
 .char-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -139,6 +358,77 @@ body {
 @media (max-width: 560px) {
   .char-grid { gap: 3px; }
   .char-box { font-size: 15px; border-radius: 6px; }
+  .origin-note {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #78350f;
+}
+
+.origin-note-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: .02em;
+}
+
+.origin-note-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: decimal;
+}
+
+.origin-note-list li { margin-bottom: 3px; }
+.origin-note-list li:last-child { margin-bottom: 0; }
+
+.char-grid-15 { grid-template-columns: repeat(15, 1fr); }
+
+@media (max-width: 560px) {
+  .char-grid-15 { grid-template-columns: repeat(8, 1fr); }
+}
+
+.trans-row {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.trans-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.trans-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  color: #111827;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.trans-input::placeholder { color: #9ca3af; }
+
+.trans-input:focus {
+  border-color: #5B9BD5;
+  box-shadow: 0 0 0 3px rgba(91,155,213,.15);
+}
+
+.trans-input.error { border-color: #dc2626 !important; background: #fef2f2; }
+
+.notice-card { padding: 16px; }
+  .notice-list li { font-size: 12.5px; }
 }
 
 @media (max-width: 400px) {
@@ -146,17 +436,171 @@ body {
   .char-box { font-size: 13px; border-width: 1px; border-radius: 5px; }
 }
 
-.req {
+.opt {
   display: inline-block;
   margin-left: 6px;
   font-size: 11px;
-  color: #dc2626;
-  background: #fee2e2;
+  color: #64748b;
+  background: #f1f5f9;
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 500;
   letter-spacing: 0;
 }
+
+.eg-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.eg-tab {
+  flex: 1;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 7px 4px;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.eg-tab:hover { border-color: #c4b5fd; }
+
+.eg-tab.is-on {
+  color: #6d28d9;
+  background: #f5f3ff;
+  border-color: #8b5cf6;
+}
+
+.light-svg {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  display: block;
+  margin: 0 auto 8px;
+  background: #0f172a;
+  border-radius: 10px;
+}
+
+.light-cap {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.light-note {
+  font-size: 11.5px;
+  color: #9ca3af;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.opt-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opt-item {
+  display: block;
+  cursor: pointer;
+}
+
+.opt-item input { position: absolute; opacity: 0; pointer-events: none; }
+
+.opt-box {
+  display: block;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 11px 14px;
+  background: #fff;
+  transition: border-color .15s, background .15s;
+}
+
+.opt-item:hover .opt-box { border-color: #c4b5fd; }
+
+.opt-item input:checked + .opt-box {
+  border-color: #8b5cf6;
+  background: #f5f3ff;
+}
+
+.opt-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.opt-item input:checked + .opt-box .opt-name { color: #6d28d9; }
+
+.opt-desc {
+  display: block;
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.55;
+}
+
+.opt-group.error .opt-box { border-color: #dc2626; }
+
+.sub-q {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.sub-q:first-of-type { border-top: none; padding-top: 4px; }
+
+.sub-q-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.sub-q-tag {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d97706;
+}
+
+.sub-q-limit {
+  font-size: 11.5px;
+  color: #9ca3af;
+}
+
+.q-rule {
+  display: inline-block;
+  margin-top: 3px;
+  color: #b45309;
+  background: #fffbeb;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .q-rule { white-space: normal; font-size: 11.5px; }
+}
+
+.q-rule b { font-weight: 600; }
+
+.q-eg {
+  font-family: 'Noto Sans TC', monospace;
+  letter-spacing: .12em;
+  color: #334155;
+  background: #f8fafc;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.q-desc strong { color: #1e293b; font-weight: 600; }
 
 .survey-textarea.error { border-color: #dc2626 !important; background: #fef2f2; }
 
@@ -255,83 +699,6 @@ input[type="range"]::-webkit-slider-thumb {
 .slider-sub-val {
   font-weight: 500;
   color: #374151;
-}
-
-/* RANK */
-.rank-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.rank-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: #f9fafb;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 10px;
-  transition: all 0.15s;
-  user-select: none;
-}
-
-.rank-item.dragging {
-  opacity: 0.5;
-  border-color: #7BA6DE;
-  background: #eff6ff;
-}
-
-.rank-item.drag-over {
-  border-color: #7BA6DE;
-  background: #eff6ff;
-  transform: scale(1.01);
-}
-
-.rank-num {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.rank-num.rank-1 { background: #b45309; color: #fff; }
-.rank-num.rank-2 { background: #d97706; color: #fff; }
-.rank-num.rank-3 { background: #f59e0b; color: #fff; }
-.rank-num.rank-4 { background: #fbbf24; color: #78350f; }
-.rank-num.rank-5 { background: #fde68a; color: #78350f; }
-
-.rank-name {
-  font-size: 14px;
-  font-weight: 500;
-  flex: 1;
-}
-
-.rank-handle {
-  color: #4b5563;
-  font-size: 18px;
-  padding: 8px 6px;
-  margin: -8px -6px -8px 0;
-  cursor: grab;
-  touch-action: none;
-  line-height: 1;
-}
-
-.rank-handle:active { cursor: grabbing; }
-
-.rank-hint {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-bottom: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 /* TEXTAREA */
@@ -483,57 +850,220 @@ input[type="range"]::-webkit-slider-thumb {
   <div class="hero-tag">TAIWAN FIMILY · 應援企劃</div>
   <div class="hero-title">LE SSERAFIM 演唱會應援內容意願調查</div>
   <div class="hero-desc">
-    我們正在規劃演唱會應援活動，希望了解大家對各項應援內容的意願與偏好。<br>
+    我們正在規劃本次 PUREFLOW 11/14~11/15 台北場演唱會應援活動，希望了解大家對各項應援內容的想法與偏好。<br>
     你的回饋將直接影響應援企劃的方向，請誠實填寫！
   </div>
 </div>
 
-<!-- Q1: 場內排序 -->
-<div class="q-card">
-  <div class="q-num">01 · 場內應援 <span class="req">必填</span></div>
-  <div class="q-title">場內應援項目，請依意願排序</div>
-  <div class="q-desc">第 1 名為最希望看到的項目</div>
-  <div class="rank-hint">☰ 拖曳項目調整順序</div>
-  <div class="rank-list" id="indoor-rank">
-    <div class="rank-item" data-name="手指燈">
-      <div class="rank-num rank-1">1</div>
-      <div class="rank-name">手指燈</div>
-      <div class="rank-handle" draggable="true">⋮⋮</div>
+<!-- NOTICE -->
+<div class="notice-card">
+  <div class="notice-head">
+    <span class="notice-icon">!</span>
+    <span class="notice-title">填寫前請詳閱</span>
+  </div>
+
+  <ol class="notice-list">
+    <li>
+      <strong>表單開放兩週</strong>｜
+      關閉後團隊會先審核所有投稿，接著開放投票，
+      <strong>得票最高的內容才會拿去向經紀公司提案。</strong>
+    </li>
+    <li>
+      <strong>請填寫正向、友善的內容</strong>｜
+      含有攻擊性、負面或不適當字詞的投稿將不予採納。
+    </li>
+    <li>
+      <strong>本表單僅為意願與想法募集，非正式確定的應援項目</strong>｜
+      正式項目須經經紀公司審核通過後才會公告。
+    </li>
+    <li>
+      <strong>我們會盡力向經紀公司爭取</strong>｜
+      但最終仍以官方決定為準，部分項目可能因場地規範、版權或安全考量無法執行，還請大家理解。
+    </li>
+    <li>
+      <strong>除最後一題外，其餘皆為必填</strong>｜
+      未填完整將無法送出。
+    </li>
+  </ol>
+</div>
+
+<!-- PLAN -->
+<div class="plan-card">
+  <div class="plan-head">
+    <span class="plan-icon">★</span>
+    <span class="plan-title">本次應援企劃</span>
+  </div>
+
+  <div class="plan-section">
+    <div class="plan-label">提案項目</div>
+    <div class="plan-body">
+      <div class="plan-line"><span class="plan-key">手指燈海</span>大家一起用手指燈打造燈海效果</div>
+      <div class="plan-line"><span class="plan-key">排字</span>二樓中間座位區各持紙卡，拼成一句話</div>
+      <div class="plan-line"><span class="plan-key">手幅</span>排字區以外的觀眾舉手幅</div>
     </div>
-    <div class="rank-item" data-name="排字">
-      <div class="rank-num rank-2">2</div>
-      <div class="rank-name">排字</div>
-      <div class="rank-handle" draggable="true">⋮⋮</div>
+  </div>
+
+  <div class="plan-section">
+    <div class="plan-label">應援時機（兩天場次皆同）</div>
+    <div class="plan-body">
+      <div class="plan-line"><span class="plan-key">手指燈海</span>Need your company 整首歌</div>
+      <div class="plan-line"><span class="plan-key">排字・手幅</span>Fearless 開始舉起，直到 Talk 結束</div>
     </div>
-    <div class="rank-item" data-name="手幅">
-      <div class="rank-num rank-3">3</div>
-      <div class="rank-name">手幅</div>
-      <div class="rank-handle" draggable="true">⋮⋮</div>
+  </div>
+
+  <div class="plan-section plan-birthday">
+    <div class="plan-label">恩採生日應援</div>
+    <div class="plan-body">
+      <p>演唱會當週剛好是恩採的生日（11/10），我們會一併向公司提案慶生應援。</p>
+      <p>若通過，<strong>第一天（11/14）</strong>的排字與手幅就會改用恩採生日相關的內容；<br>
+      若未通過，則使用一般版本。</p>
+      <p>兩種版本都需要徵稿，所以本表單第 1、2 題收一般版，第 3 題收慶生版。</p>
     </div>
   </div>
 </div>
 
-<!-- Q2: 場內應援建議 -->
+<!-- Q1: 排字應援募集 -->
 <div class="q-card">
-  <div class="q-num">02 · 場內應援 <span class="req">必填</span></div>
-  <div class="q-title">有什麼希望做的「場內應援」嗎？</div>
-  <textarea class="survey-textarea" id="outdoor-activity" placeholder="填寫你希望的場內應援內容…"></textarea>
-  <div class="err-msg" id="err-outdoor-activity">此題為必填</div>
-</div>
-
-<!-- Q3: 排字應援募集 -->
-<div class="q-card">
-  <div class="q-num">03 · 排字應援募集 <span class="req">必填</span></div>
+  <div class="q-num" style="color:#5B9BD5;">01 · 排字應援</div>
   <div class="q-title">排字應援募集 10~12 個字的韓文 / 英文 / 符號</div>
-  <div class="q-desc">一格填一個字，前 10 格必填，後 2 格可留空。空格也算一個字。<br>例：F E A R N O T ␣ ♥ ␣ L S　共 12 字</div>
+  <div class="q-desc">
+    由二樓中間座位區的觀眾各持紙卡拼成的句子，長度需控制在 <strong>10~12 字</strong>（韓文或英文）。<br>
+    <span class="q-rule">一格一個字元：「생일」<b>2 格</b>、「LOVE」<b>4 格</b>，空格與標點也各佔一格</span><br>
+    例：<span class="q-eg">F E A R N O T ␣ ♥ ␣ L S</span>　共 12 字
+  </div>
+  <div class="origin-note">
+    <div class="origin-note-title">【原創投稿須知】</div>
+    <ol class="origin-note-list">
+      <li>請優先使用個人原創發想之文句，避免因文案相似產生版權糾紛。</li>
+      <li>若有引用其他場次之既有文案，請務必於下方欄位註明出處。</li>
+    </ol>
+  </div>
   <div class="char-grid" id="char-grid"></div>
   <div class="char-count"><span id="char-count-num">0</span> / 12 字</div>
   <div class="err-msg" id="err-crowdfund-wish">請輸入 10~12 個字</div>
+
+  <div class="trans-row">
+    <label class="trans-label" for="crowdfund-trans">中文翻譯</label>
+    <input type="text" class="trans-input" id="crowdfund-trans"
+           placeholder="請說明上面內容的中文意思" maxlength="60" autocomplete="off">
+    <div class="err-msg" id="err-crowdfund-trans">請填寫中文翻譯</div>
+
+    <label class="trans-label" for="crowdfund-reason" style="margin-top:12px;">想表達的意思</label>
+    <input type="text" class="trans-input" id="crowdfund-reason"
+           placeholder="想傳達什麼心情？若引用自其他場次請說明出處" maxlength="80" autocomplete="off">
+    <div class="err-msg" id="err-crowdfund-reason">請說明想表達的意思</div>
+  </div>
 </div>
 
-<!-- Q4: 其他意見 -->
+<!-- Q2: 手幅應援內容募集 -->
 <div class="q-card">
-  <div class="q-num">04 · 其他建議 <span class="req">必填</span></div>
+  <div class="q-num" style="color:#059669;">02 · 手幅應援</div>
+  <div class="q-title">你希望「手幅」上寫什麼？</div>
+  <div class="q-desc">
+    排字區以外的觀眾舉的應援板，全場內容相同，長度需控制在 <strong>10~15 字</strong>（韓文或英文）。<br>
+    <span class="q-rule">一格一個字元：「생일」<b>2 格</b>、「LOVE」<b>4 格</b>，空格與標點也各佔一格</span><br>
+    例：<span class="q-eg">영 원 히 ␣ 함 께 ␣ 하 자 ␣ !</span>　共 11 字
+  </div>
+  <div class="origin-note">
+    <div class="origin-note-title">【原創投稿須知】</div>
+    <ol class="origin-note-list">
+      <li>請優先使用個人原創發想之文句，避免因文案相似產生版權糾紛。</li>
+      <li>若有引用其他場次之既有文案，請務必於下方欄位註明出處。</li>
+    </ol>
+  </div>
+  <div class="char-grid char-grid-15" id="banner-grid"></div>
+  <div class="char-count"><span id="banner-count-num">0</span> / 15 字</div>
+  <div class="err-msg" id="err-banner-wish">請輸入 10~15 個字</div>
+
+  <div class="trans-row">
+    <label class="trans-label" for="banner-trans">中文翻譯</label>
+    <input type="text" class="trans-input" id="banner-trans"
+           placeholder="請說明上面內容的中文意思" maxlength="60" autocomplete="off">
+    <div class="err-msg" id="err-banner-trans">請填寫中文翻譯</div>
+
+    <label class="trans-label" for="banner-reason" style="margin-top:12px;">想表達的意思</label>
+    <input type="text" class="trans-input" id="banner-reason"
+           placeholder="想傳達什麼心情？若引用自其他場次請說明出處" maxlength="80" autocomplete="off">
+    <div class="err-msg" id="err-banner-reason">請說明想表達的意思</div>
+  </div>
+</div>
+
+<!-- Q3: 恩採生日應援募集 -->
+<div class="q-card">
+  <div class="q-num" style="color:#d97706;">03 · 恩採生日應援</div>
+  <div class="q-title">恩採生日版的排字與手幅</div>
+  <div class="q-desc">
+    恩採生日是 <strong>11/10</strong>。若公司通過生日應援，<strong>第一天（11/14）</strong>的排字與手幅內容就會換成恩採相關的文字；
+    若未通過，則使用前兩題徵稿的內容。<br>
+    以下兩欄請分別填寫慶生版本。
+  </div>
+
+  <div class="sub-q">
+    <div class="sub-q-head"><span class="sub-q-tag">排字</span><span class="sub-q-limit">10~12 字</span></div>
+    <div class="char-grid" id="bday-grid"></div>
+    <div class="char-count"><span id="bday-count-num">0</span> / 12 字</div>
+    <div class="err-msg" id="err-bday-wish">請輸入 10~12 個字</div>
+  </div>
+
+  <div class="sub-q">
+    <div class="sub-q-head"><span class="sub-q-tag">手幅</span><span class="sub-q-limit">10~15 字</span></div>
+    <div class="char-grid char-grid-15" id="bday2-grid"></div>
+    <div class="char-count"><span id="bday2-count-num">0</span> / 15 字</div>
+    <div class="err-msg" id="err-bday2-wish">請輸入 10~15 個字</div>
+  </div>
+
+  <div class="trans-row">
+    <label class="trans-label" for="bday-trans">中文翻譯</label>
+    <input type="text" class="trans-input" id="bday-trans"
+           placeholder="請說明上面兩句的中文意思" maxlength="80" autocomplete="off">
+    <div class="err-msg" id="err-bday-trans">請填寫中文翻譯</div>
+
+    <label class="trans-label" for="bday-reason" style="margin-top:12px;">想表達的意思</label>
+    <input type="text" class="trans-input" id="bday-reason"
+           placeholder="想傳達什麼心情？若引用自其他場次請說明出處" maxlength="80" autocomplete="off">
+    <div class="err-msg" id="err-bday-reason">請說明想表達的意思</div>
+  </div>
+</div>
+
+<!-- Q4: 手指燈海 -->
+<div class="q-card">
+  <div class="q-num" style="color:#8b5cf6;">04 · 手指燈海</div>
+  <div class="q-title">你希望手指燈海怎麼呈現？</div>
+  <div class="q-desc">
+    在 Need your company 整首歌期間，全場一起用手指燈打造燈海效果。<br>
+    下方是幾個常見做法的示意，點按鈕可以切換參考。
+  </div>
+
+  <div class="eg-tabs" id="light-tabs">
+    <button type="button" class="eg-tab is-on" data-eg="彩虹">彩虹漸層</button>
+    <button type="button" class="eg-tab" data-eg="圖案排列">圖案排列</button>
+    <button type="button" class="eg-tab" data-eg="全場同色">全場同色</button>
+  </div>
+
+  <svg id="light-preview" viewBox="0 0 560 700" class="light-svg" role="img" aria-label="手指燈海示意圖">
+    <rect x="196" y="20" width="168" height="30" rx="4" fill="#f8fafc"/>
+    <text x="280" y="35" text-anchor="middle" dominant-baseline="central" fill="#0f172a" font-size="15" font-weight="600" letter-spacing="2">STAGE</text>
+    <g id="light-dots"></g>
+  </svg>
+  <div class="light-cap" id="light-cap">以舞台為中心，內圈紫、外圈紅六道弧帶</div>
+  <div class="light-note">※ 以上僅為呈現方式的參考範例，非實際場館座位配置，也不是既定選項。</div>
+
+  <div class="trans-row" style="margin-top:16px;">
+    <label class="trans-label" for="light-idea">你的想法</label>
+    <div class="q-desc" style="margin-bottom:8px;">
+      請用文字描述你希望的燈海內容，<strong>越詳細越好</strong>。<br>
+      例如：想要什麼顏色、怎麼分區、有沒有想排的圖案或字、參考過哪個場次的效果。<br>
+      我們會依據大家的投稿評估可行性，可行性高的會做成模擬圖再開放票選。
+    </div>
+    <textarea class="survey-textarea" id="light-idea"
+              placeholder="例如：希望以舞台為中心做藍白漸層，靠近舞台的區塊用白色、後段看台用 FEARLESS BLUE…"></textarea>
+    <div class="err-msg" id="err-light-idea">此題為必填</div>
+  </div>
+</div>
+
+<!-- Q5: 其他意見 -->
+<div class="q-card">
+  <div class="q-num">05 · 其他建議 <span class="opt">選填</span></div>
   <div class="q-title">其他推薦應援 & 回饋意見</div>
   <div class="q-desc">有任何想法或建議都歡迎告訴我們！<br>我們會依照可行性斟酌評估，並向經紀公司提案。</div>
   <textarea class="survey-textarea" id="feedback" placeholder="例如：希望有 OO 應援、對 XX 項目有疑問…"></textarea>
@@ -553,110 +1083,23 @@ input[type="range"]::-webkit-slider-thumb {
 const SUPABASE_URL = 'https://gexcoudliocybhmlziss.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
 
-// DRAG & DROP RANK
-function initDrag(listId) {
-  const list = document.getElementById(listId);
-  let dragItem = null;
-
-  // === Desktop: HTML5 drag, but only from handle ===
-  list.querySelectorAll('.rank-item').forEach(item => {
-    const handle = item.querySelector('.rank-handle');
-
-    handle.addEventListener('dragstart', e => {
-      dragItem = item;
-      // Firefox 需要 setData 才會觸發 drag
-      if(e.dataTransfer) { try { e.dataTransfer.setData('text/plain', ''); } catch(_){} }
-      setTimeout(() => item.classList.add('dragging'), 0);
-    });
-    handle.addEventListener('dragend', () => {
-      item.classList.remove('dragging');
-      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-      dragItem = null;
-      updateRankNums(listId);
-      updateProgress();
-    });
-    item.addEventListener('dragover', e => {
-      e.preventDefault();
-      if(!dragItem || item === dragItem) return;
-      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-      item.classList.add('drag-over');
-      const rect = item.getBoundingClientRect();
-      const mid = rect.top + rect.height / 2;
-      if(e.clientY < mid) list.insertBefore(dragItem, item);
-      else list.insertBefore(dragItem, item.nextSibling);
-    });
-  });
-
-  // === Mobile: touch events, only from handle ===
-  let touchDragItem = null;
-
-  list.querySelectorAll('.rank-item').forEach(item => {
-    const handle = item.querySelector('.rank-handle');
-
-    handle.addEventListener('touchstart', e => {
-      e.preventDefault();
-      touchDragItem = item;
-      item.classList.add('dragging');
-    }, {passive: false});
-
-    handle.addEventListener('touchmove', e => {
-      if(!touchDragItem) return;
-      e.preventDefault();
-      const touch = e.touches[0];
-      const el = document.elementFromPoint(touch.clientX, touch.clientY);
-      if(!el) return;
-      const target = el.closest('.rank-item');
-      if(target && target !== touchDragItem && list.contains(target)) {
-        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-        target.classList.add('drag-over');
-        const rect = target.getBoundingClientRect();
-        if(touch.clientY < rect.top + rect.height / 2) list.insertBefore(touchDragItem, target);
-        else list.insertBefore(touchDragItem, target.nextSibling);
-      }
-    }, {passive: false});
-
-    handle.addEventListener('touchend', () => {
-      if(touchDragItem) touchDragItem.classList.remove('dragging');
-      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-      touchDragItem = null;
-      updateRankNums(listId);
-      updateProgress();
-    });
-
-    handle.addEventListener('touchcancel', () => {
-      if(touchDragItem) touchDragItem.classList.remove('dragging');
-      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-      touchDragItem = null;
-    });
-  });
-}
-
-function updateRankNums(listId) {
-  const list = document.getElementById(listId);
-  list.querySelectorAll('.rank-item').forEach((item, i) => {
-    const num = item.querySelector('.rank-num');
-    num.textContent = i + 1;
-    num.className = 'rank-num rank-' + (i + 1);
-  });
-}
-
-function getRankOrder(listId) {
-  return Array.from(document.getElementById(listId).querySelectorAll('.rank-item'))
-    .map((item, i) => ({ rank: i + 1, name: item.dataset.name }));
-}
-
-initDrag('indoor-rank');
-
 // CHAR GRID
-const CHAR_TOTAL = 12;
-const CHAR_REQUIRED = 10;
+const GRIDS = {
+  'char-grid':   { total: 12, required: 10, countEl: 'char-count-num',   errEl: 'err-crowdfund-wish' },
+  'banner-grid': { total: 15, required: 10, countEl: 'banner-count-num', errEl: 'err-banner-wish' },
+  'bday-grid':   { total: 12, required: 10, countEl: 'bday-count-num',   errEl: 'err-bday-wish' },
+  'bday2-grid':  { total: 15, required: 10, countEl: 'bday2-count-num',  errEl: 'err-bday2-wish' }
+};
 
-function buildCharGrid() {
-  const grid = document.getElementById('char-grid');
-  for(let i = 0; i < CHAR_TOTAL; i++) {
+function buildCharGrid(gridId) {
+  const cfg = GRIDS[gridId];
+  const grid = document.getElementById(gridId);
+  const TOTAL = cfg.total;
+
+  for(let i = 0; i < TOTAL; i++) {
     const input = document.createElement('input');
     input.type = 'text';
-    input.className = 'char-box' + (i >= CHAR_REQUIRED ? ' optional' : '');
+    input.className = 'char-box' + (i >= cfg.required ? ' optional' : '');
     input.dataset.idx = i;
     input.setAttribute('autocomplete', 'off');
     input.setAttribute('autocapitalize', 'off');
@@ -665,50 +1108,32 @@ function buildCharGrid() {
     // IME 組字狀態（韓文 ㅅ + ㅏ = 사 需要多次按鍵）
     input.composing = false;
 
-    input.addEventListener('compositionstart', () => {
-      input.composing = true;
-    });
-
-    input.addEventListener('compositionend', () => {
-      input.composing = false;
-      // 組字完成後才裁切成一個字，並跳下一格
+    const spill = () => {
       const chars = Array.from(input.value);
       if(chars.length > 1) {
         const overflow = chars.slice(1);
         input.value = chars[0];
-        // 多出來的字往後面格子塞
-        for(let j = 0; j < overflow.length && i + 1 + j < CHAR_TOTAL; j++) {
+        for(let j = 0; j < overflow.length && i + 1 + j < TOTAL; j++) {
           grid.children[i + 1 + j].value = overflow[j];
         }
       }
-      if(input.value && i < CHAR_TOTAL - 1) {
-        grid.children[i + 1].focus();
-      }
-      updateCharCount();
-      clearGridErr();
+      if(input.value && i < TOTAL - 1) grid.children[i + 1].focus();
+      updateCharCount(gridId);
+      clearGridErr(gridId);
       updateProgress();
+    };
+
+    input.addEventListener('compositionstart', () => { input.composing = true; });
+
+    input.addEventListener('compositionend', () => {
+      input.composing = false;
+      spill();
     });
 
     input.addEventListener('input', () => {
       // 組字中不做任何裁切／跳格，讓 ㅅ 有機會變成 사
-      if(input.composing) {
-        updateCharCount();
-        return;
-      }
-      const chars = Array.from(input.value);
-      if(chars.length > 1) {
-        const overflow = chars.slice(1);
-        input.value = chars[0];
-        for(let j = 0; j < overflow.length && i + 1 + j < CHAR_TOTAL; j++) {
-          grid.children[i + 1 + j].value = overflow[j];
-        }
-      }
-      if(input.value && i < CHAR_TOTAL - 1) {
-        grid.children[i + 1].focus();
-      }
-      updateCharCount();
-      clearGridErr();
-      updateProgress();
+      if(input.composing) { updateCharCount(gridId); return; }
+      spill();
     });
 
     input.addEventListener('keydown', e => {
@@ -718,11 +1143,11 @@ function buildCharGrid() {
         const prev = grid.children[i - 1];
         prev.value = '';
         prev.focus();
-        updateCharCount();
+        updateCharCount(gridId);
         updateProgress();
       }
       if(e.key === 'ArrowLeft' && i > 0) grid.children[i - 1].focus();
-      if(e.key === 'ArrowRight' && i < CHAR_TOTAL - 1) grid.children[i + 1].focus();
+      if(e.key === 'ArrowRight' && i < TOTAL - 1) grid.children[i + 1].focus();
     });
 
     // 失焦時保險：確保只留一個字
@@ -730,7 +1155,7 @@ function buildCharGrid() {
       input.composing = false;
       const chars = Array.from(input.value);
       if(chars.length > 1) input.value = chars[0];
-      updateCharCount();
+      updateCharCount(gridId);
       updateProgress();
     });
 
@@ -738,12 +1163,12 @@ function buildCharGrid() {
       e.preventDefault();
       const text = (e.clipboardData || window.clipboardData).getData('text');
       const chars = Array.from(text);
-      for(let j = 0; j < chars.length && i + j < CHAR_TOTAL; j++) {
+      for(let j = 0; j < chars.length && i + j < TOTAL; j++) {
         grid.children[i + j].value = chars[j];
       }
-      const last = Math.min(i + chars.length, CHAR_TOTAL - 1);
-      grid.children[last].focus();
-      updateCharCount();
+      grid.children[Math.min(i + chars.length, TOTAL - 1)].focus();
+      updateCharCount(gridId);
+      clearGridErr(gridId);
       updateProgress();
     });
 
@@ -751,45 +1176,146 @@ function buildCharGrid() {
   }
 }
 
-function clearGridErr() {
-  document.getElementById('char-grid').classList.remove('error');
-  document.getElementById('err-crowdfund-wish').classList.remove('show');
+function clearGridErr(gridId) {
+  document.getElementById(gridId).classList.remove('error');
+  document.getElementById(GRIDS[gridId].errEl).classList.remove('show');
 }
 
-function getCharArray() {
-  return Array.from(document.getElementById('char-grid').children)
+function getCharArray(gridId) {
+  return Array.from(document.getElementById(gridId).children)
     .map(el => Array.from(el.value)[0] || '');
 }
 
-function getCharCount() {
-  return getCharArray().filter(c => c !== '').length;
+function getCharCount(gridId) {
+  return getCharArray(gridId).filter(c => c !== '').length;
 }
 
-function getCharText() {
-  return getCharArray().join('');
+function getCharText(gridId) {
+  return getCharArray(gridId).join('');
 }
 
-function updateCharCount() {
-  document.getElementById('char-count-num').textContent = getCharCount();
+function updateCharCount(gridId) {
+  document.getElementById(GRIDS[gridId].countEl).textContent = getCharCount(gridId);
 }
 
-buildCharGrid();
-updateCharCount();
+Object.keys(GRIDS).forEach(id => { buildCharGrid(id); updateCharCount(id); });
+
+
+// LIGHT PREVIEW
+(function(){
+  const CX = 280, CY = 76, SQ = 1.42, TOP = 62;
+  const pts = [];
+
+  function arcBand(r0, r1, rows, band) {
+    for (let i = 0; i < rows; i++) {
+      const R = r0 + (r1 - r0) * i / (rows - 1);
+      const n = Math.max(14, Math.round(R * 0.40));
+      for (let k = 0; k <= n; k++) {
+        const a = (k / n) * Math.PI;
+        const x = CX - R * Math.cos(a);
+        const y = CY + R * Math.sin(a) * SQ;
+        if (y < TOP) continue;
+        pts.push({ x, y, zone: 'stand', band, u: k / n, v: i / (rows - 1) });
+      }
+    }
+  }
+  arcBand(160, 208, 8, 0);
+  arcBand(236, 300, 11, 1);
+
+  function slab(x0, y0, cols, rows, half) {
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++)
+        pts.push({ x: x0 + c * 8.2, y: y0 + r * 8.2, zone: 'floor', half, fr: r / (rows - 1) });
+  }
+  slab(212, 92, 8, 10, 'top');
+  slab(288, 92, 8, 10, 'top');
+  slab(212, 186, 8, 10, 'bot');
+  slab(288, 186, 8, 10, 'bot');
+
+  let dMax = 0, dMin = 1e9;
+  pts.forEach(p => {
+    p.d = Math.hypot(p.x - CX, (p.y - CY) / SQ);
+    if (p.zone === 'stand') {
+      if (p.d > dMax) dMax = p.d;
+      if (p.d < dMin) dMin = p.d;
+    }
+  });
+  pts.forEach(p => { p.nd = Math.min(0.9999, Math.max(0, (p.d - dMin) / (dMax - dMin))); });
+
+  const R6   = ['#8B3FC4','#2C7BE5','#3FA845','#F7D117','#F58220','#E8453C'];
+  const TOPC = ['#E8453C','#F58220','#F7D117'];
+  const BOTC = ['#3FA845','#2C7BE5','#8B3FC4'];
+  const BG = '#2E3FCC', FG = '#ffffff';
+
+  function rainbow(p) {
+    if (p.zone === 'floor')
+      return (p.half === 'top' ? TOPC : BOTC)[Math.min(2, Math.floor(p.fr * 3))];
+    return R6[Math.floor(p.nd * 6)];
+  }
+
+  const DCOUNT = [6, 8], DW = 0.60;
+  function diamond(p) {
+    if (p.zone === 'floor') return BG;
+    const n = DCOUNT[p.band];
+    const seg = 1 / n;
+    let u = (p.u % seg) / seg;
+    const pad = (1 - DW) / 2;
+    if (u < pad || u > 1 - pad) return BG;
+    u = (u - pad) / DW;
+    return (Math.abs(u - 0.5) + Math.abs(p.v - 0.5) < 0.46) ? FG : BG;
+  }
+
+  const MODES = {
+    '彩虹':    { fn: rainbow, cap: '以舞台為中心，內圈紫、外圈紅六道弧帶' },
+    '圖案排列': { fn: diamond, cap: '單色底上排出重複圖案（此處以菱形示意）' },
+    '全場同色': { fn: () => '#5B9BD5', cap: '全場統一單一顏色，視覺最整齊' }
+  };
+
+  document.getElementById('light-dots').innerHTML = pts.map((p, i) =>
+    '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="2.7" data-i="' + i + '"/>'
+  ).join('');
+
+  const circles = document.querySelectorAll('#light-dots circle');
+  window.renderLightPreview = function(name){
+    const M = MODES[name] || MODES['彩虹'];
+    circles.forEach(el => el.setAttribute('fill', M.fn(pts[+el.dataset.i])));
+    document.getElementById('light-cap').textContent = M.cap;
+  };
+  renderLightPreview('彩虹');
+
+  document.querySelectorAll('.eg-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.eg-tab').forEach(b => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      renderLightPreview(btn.dataset.eg);
+    });
+  });
+})();
 
 // PROGRESS
 function updateProgress() {
-  const a = document.getElementById('outdoor-activity').value.trim() ? 1 : 0;
-  const b = getCharCount() >= 10 ? 1 : 0;
-  const c = document.getElementById('feedback').value.trim() ? 1 : 0;
-  const pct = Math.round(((1 + a + b + c) / 4) * 100);
+  const v = id => document.getElementById(id).value.trim() ? 1 : 0;
+  const done =
+      (getCharCount('char-grid')   >= 10 ? 1 : 0) + v('crowdfund-trans') + v('crowdfund-reason')
+    + (getCharCount('banner-grid') >= 10 ? 1 : 0) + v('banner-trans')    + v('banner-reason')
+    + (getCharCount('bday-grid')   >= 10 ? 1 : 0)
+    + (getCharCount('bday2-grid')  >= 10 ? 1 : 0) + v('bday-trans')      + v('bday-reason')
+    + v('light-idea');
+  const pct = Math.round((done / 11) * 100);
   document.getElementById('progress').style.width = pct + '%';
 }
 
 document.getElementById('feedback').addEventListener('input', updateProgress);
-document.getElementById('outdoor-activity').addEventListener('input', updateProgress);
+document.getElementById('crowdfund-trans').addEventListener('input', updateProgress);
+document.getElementById('banner-trans').addEventListener('input', updateProgress);
+document.getElementById('crowdfund-reason').addEventListener('input', updateProgress);
+document.getElementById('banner-reason').addEventListener('input', updateProgress);
+document.getElementById('bday-trans').addEventListener('input', updateProgress);
+document.getElementById('bday-reason').addEventListener('input', updateProgress);
+document.getElementById('light-idea').addEventListener('input', updateProgress);
 updateProgress();
 
-['outdoor-activity','feedback'].forEach(id => {
+['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => clearErr(id));
 });
 
@@ -811,33 +1337,63 @@ function validateForm() {
   let ok = true;
   let firstBad = null;
 
-  ['outdoor-activity','feedback'].forEach(id => clearErr(id));
+  ['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea'].forEach(id => clearErr(id));
 
-  const act = document.getElementById('outdoor-activity').value.trim();
-  if(!act) {
-    showErr('outdoor-activity', '此題為必填');
+  ['char-grid','banner-grid','bday-grid','bday2-grid'].forEach(gid => {
+    const g = document.getElementById(gid);
+    const e = document.getElementById(GRIDS[gid].errEl);
+    g.classList.remove('error');
+    e.classList.remove('show');
+    const filled = getCharCount(gid);
+    if(filled < GRIDS[gid].required) {
+      g.classList.add('error');
+      e.textContent = '前 ' + GRIDS[gid].required + ' 格為必填（目前 ' + filled + ' 字）';
+      e.classList.add('show');
+      ok = false;
+      firstBad = firstBad || gid;
+    }
+  });
+
+  if(!document.getElementById('crowdfund-trans').value.trim()) {
+    showErr('crowdfund-trans', '請填寫中文翻譯');
     ok = false;
-    firstBad = firstBad || 'outdoor-activity';
+    firstBad = firstBad || 'crowdfund-trans';
   }
 
-  const grid = document.getElementById('char-grid');
-  const errWish = document.getElementById('err-crowdfund-wish');
-  grid.classList.remove('error');
-  errWish.classList.remove('show');
-  const filled = getCharCount();
-  if(filled < 10) {
-    grid.classList.add('error');
-    errWish.textContent = '前 10 格為必填（目前 ' + filled + ' 字）';
-    errWish.classList.add('show');
+  if(!document.getElementById('crowdfund-reason').value.trim()) {
+    showErr('crowdfund-reason', '請說明想表達的意思');
     ok = false;
-    firstBad = firstBad || 'char-grid';
+    firstBad = firstBad || 'crowdfund-reason';
   }
 
-  const fb = document.getElementById('feedback').value.trim();
-  if(!fb) {
-    showErr('feedback', '此題為必填');
+  if(!document.getElementById('banner-trans').value.trim()) {
+    showErr('banner-trans', '請填寫中文翻譯');
     ok = false;
-    firstBad = firstBad || 'feedback';
+    firstBad = firstBad || 'banner-trans';
+  }
+
+  if(!document.getElementById('banner-reason').value.trim()) {
+    showErr('banner-reason', '請說明想表達的意思');
+    ok = false;
+    firstBad = firstBad || 'banner-reason';
+  }
+
+  if(!document.getElementById('bday-trans').value.trim()) {
+    showErr('bday-trans', '請填寫中文翻譯');
+    ok = false;
+    firstBad = firstBad || 'bday-trans';
+  }
+
+  if(!document.getElementById('bday-reason').value.trim()) {
+    showErr('bday-reason', '請說明想表達的意思');
+    ok = false;
+    firstBad = firstBad || 'bday-reason';
+  }
+
+  if(!document.getElementById('light-idea').value.trim()) {
+    showErr('light-idea', '此題為必填');
+    ok = false;
+    firstBad = firstBad || 'light-idea';
   }
 
   if(firstBad) {
@@ -854,9 +1410,17 @@ async function submitSurvey() {
   btn.textContent = '送出中…';
 
   const data = {
-    indoor_rank: getRankOrder('indoor-rank'),
-    outdoor_activity: document.getElementById('outdoor-activity').value.trim() || null,
-    crowdfund_wish: getCharText().trim() || null,
+    crowdfund_wish: getCharText('char-grid').trim() || null,
+    crowdfund_trans: document.getElementById('crowdfund-trans').value.trim() || null,
+    banner_wish: getCharText('banner-grid').trim() || null,
+    banner_trans: document.getElementById('banner-trans').value.trim() || null,
+    crowdfund_reason: document.getElementById('crowdfund-reason').value.trim() || null,
+    banner_reason: document.getElementById('banner-reason').value.trim() || null,
+    bday_wish: getCharText('bday-grid').trim() || null,
+    bday_banner: getCharText('bday2-grid').trim() || null,
+    bday_trans: document.getElementById('bday-trans').value.trim() || null,
+    bday_reason: document.getElementById('bday-reason').value.trim() || null,
+    light_idea: document.getElementById('light-idea').value.trim() || null,
     feedback: document.getElementById('feedback').value.trim() || null,
     submitted_at: new Date().toISOString()
   };
