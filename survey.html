@@ -960,9 +960,7 @@ input[type="range"]::-webkit-slider-thumb {
   <div class="q-num" style="color:#059669;">02 · 手幅應援</div>
   <div class="q-title">你希望「手幅」上寫什麼？</div>
   <div class="q-desc">
-    排字區以外的觀眾舉的應援板，全場內容相同，長度需控制在 <strong>10~15 字</strong>（韓文或英文）。<br>
-    <span class="q-rule">一格一個字元：「생일」<b>2 格</b>、「LOVE」<b>4 格</b>，空格與標點也各佔一格</span><br>
-    例：<span class="q-eg">영 원 히 ␣ 함 께 ␣ 하 자 ␣ !</span>　共 11 字
+    排字區以外的觀眾舉的應援板，全場內容相同，內容為韓文或英文。
   </div>
   <div class="origin-note">
     <div class="origin-note-title">【原創投稿須知】</div>
@@ -971,9 +969,9 @@ input[type="range"]::-webkit-slider-thumb {
       <li>若有引用其他場次之既有文案，請務必於下方欄位註明出處。</li>
     </ol>
   </div>
-  <div class="char-grid char-grid-15" id="banner-grid"></div>
-  <div class="char-count"><span id="banner-count-num">0</span> / 15 字</div>
-  <div class="err-msg" id="err-banner-wish">請輸入 10~15 個字</div>
+  <input type="text" class="trans-input" id="banner-wish"
+         placeholder="填寫你希望的手幅內容（韓文或英文，最多 20 字）" maxlength="20" autocomplete="off">
+  <div class="err-msg" id="err-banner-wish">此題為必填</div>
 
   <div class="trans-row">
     <label class="trans-label" for="banner-trans">中文翻譯</label>
@@ -1006,10 +1004,10 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 
   <div class="sub-q">
-    <div class="sub-q-head"><span class="sub-q-tag">手幅</span><span class="sub-q-limit">10~15 字</span></div>
-    <div class="char-grid char-grid-15" id="bday2-grid"></div>
-    <div class="char-count"><span id="bday2-count-num">0</span> / 15 字</div>
-    <div class="err-msg" id="err-bday2-wish">請輸入 10~15 個字</div>
+    <div class="sub-q-head"><span class="sub-q-tag">手幅</span><span class="sub-q-limit">韓文 / 英文</span></div>
+    <input type="text" class="trans-input" id="bday-banner"
+           placeholder="填寫慶生版手幅內容（韓文或英文，最多 20 字）" maxlength="20" autocomplete="off">
+    <div class="err-msg" id="err-bday-banner">此題為必填</div>
   </div>
 
   <div class="trans-row">
@@ -1086,9 +1084,7 @@ const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
 // CHAR GRID
 const GRIDS = {
   'char-grid':   { total: 12, required: 10, countEl: 'char-count-num',   errEl: 'err-crowdfund-wish' },
-  'banner-grid': { total: 15, required: 10, countEl: 'banner-count-num', errEl: 'err-banner-wish' },
-  'bday-grid':   { total: 12, required: 10, countEl: 'bday-count-num',   errEl: 'err-bday-wish' },
-  'bday2-grid':  { total: 15, required: 10, countEl: 'bday2-count-num',  errEl: 'err-bday2-wish' }
+  'bday-grid':   { total: 12, required: 10, countEl: 'bday-count-num',   errEl: 'err-bday-wish' }
 };
 
 function buildCharGrid(gridId) {
@@ -1297,9 +1293,9 @@ function updateProgress() {
   const v = id => document.getElementById(id).value.trim() ? 1 : 0;
   const done =
       (getCharCount('char-grid')   >= 10 ? 1 : 0) + v('crowdfund-trans') + v('crowdfund-reason')
-    + (getCharCount('banner-grid') >= 10 ? 1 : 0) + v('banner-trans')    + v('banner-reason')
+    + v('banner-wish') + v('banner-trans')    + v('banner-reason')
     + (getCharCount('bday-grid')   >= 10 ? 1 : 0)
-    + (getCharCount('bday2-grid')  >= 10 ? 1 : 0) + v('bday-trans')      + v('bday-reason')
+    + v('bday-banner') + v('bday-trans')      + v('bday-reason')
     + v('light-idea');
   const pct = Math.round((done / 11) * 100);
   document.getElementById('progress').style.width = pct + '%';
@@ -1312,10 +1308,12 @@ document.getElementById('crowdfund-reason').addEventListener('input', updateProg
 document.getElementById('banner-reason').addEventListener('input', updateProgress);
 document.getElementById('bday-trans').addEventListener('input', updateProgress);
 document.getElementById('bday-reason').addEventListener('input', updateProgress);
+document.getElementById('banner-wish').addEventListener('input', updateProgress);
+document.getElementById('bday-banner').addEventListener('input', updateProgress);
 document.getElementById('light-idea').addEventListener('input', updateProgress);
 updateProgress();
 
-['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea'].forEach(id => {
+['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea','banner-wish','bday-banner'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => clearErr(id));
 });
 
@@ -1337,9 +1335,9 @@ function validateForm() {
   let ok = true;
   let firstBad = null;
 
-  ['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea'].forEach(id => clearErr(id));
+  ['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea','banner-wish','bday-banner'].forEach(id => clearErr(id));
 
-  ['char-grid','banner-grid','bday-grid','bday2-grid'].forEach(gid => {
+  ['char-grid','bday-grid'].forEach(gid => {
     const g = document.getElementById(gid);
     const e = document.getElementById(GRIDS[gid].errEl);
     g.classList.remove('error');
@@ -1366,6 +1364,12 @@ function validateForm() {
     firstBad = firstBad || 'crowdfund-reason';
   }
 
+  if(!document.getElementById('banner-wish').value.trim()) {
+    showErr('banner-wish', '此題為必填');
+    ok = false;
+    firstBad = firstBad || 'banner-wish';
+  }
+
   if(!document.getElementById('banner-trans').value.trim()) {
     showErr('banner-trans', '請填寫中文翻譯');
     ok = false;
@@ -1376,6 +1380,12 @@ function validateForm() {
     showErr('banner-reason', '請說明想表達的意思');
     ok = false;
     firstBad = firstBad || 'banner-reason';
+  }
+
+  if(!document.getElementById('bday-banner').value.trim()) {
+    showErr('bday-banner', '此題為必填');
+    ok = false;
+    firstBad = firstBad || 'bday-banner';
   }
 
   if(!document.getElementById('bday-trans').value.trim()) {
@@ -1412,12 +1422,12 @@ async function submitSurvey() {
   const data = {
     crowdfund_wish: getCharText('char-grid').trim() || null,
     crowdfund_trans: document.getElementById('crowdfund-trans').value.trim() || null,
-    banner_wish: getCharText('banner-grid').trim() || null,
+    banner_wish: document.getElementById('banner-wish').value.trim() || null,
     banner_trans: document.getElementById('banner-trans').value.trim() || null,
     crowdfund_reason: document.getElementById('crowdfund-reason').value.trim() || null,
     banner_reason: document.getElementById('banner-reason').value.trim() || null,
     bday_wish: getCharText('bday-grid').trim() || null,
-    bday_banner: getCharText('bday2-grid').trim() || null,
+    bday_banner: document.getElementById('bday-banner').value.trim() || null,
     bday_trans: document.getElementById('bday-trans').value.trim() || null,
     bday_reason: document.getElementById('bday-reason').value.trim() || null,
     light_idea: document.getElementById('light-idea').value.trim() || null,
