@@ -348,6 +348,11 @@ body {
 
 .char-grid.error .char-box { border-color: #dc2626; }
 
+.char-hint {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
 .char-count {
   margin-top: 8px;
   font-size: 12px;
@@ -939,7 +944,7 @@ input[type="range"]::-webkit-slider-thumb {
     </ol>
   </div>
   <div class="char-grid" id="char-grid"></div>
-  <div class="char-count"><span id="char-count-num">0</span> / 12 字</div>
+  <div class="char-count"><span id="char-count-num">0</span> / 12 字<span class="char-hint">　韓文打完可按空白或點下一格繼續</span></div>
   <div class="err-msg" id="err-crowdfund-wish">請輸入 10~12 個字</div>
 
   <div class="trans-row">
@@ -999,7 +1004,7 @@ input[type="range"]::-webkit-slider-thumb {
   <div class="sub-q">
     <div class="sub-q-head"><span class="sub-q-tag">排字</span><span class="sub-q-limit">10~12 字</span></div>
     <div class="char-grid" id="bday-grid"></div>
-    <div class="char-count"><span id="bday-count-num">0</span> / 12 字</div>
+    <div class="char-count"><span id="bday-count-num">0</span> / 12 字<span class="char-hint">　韓文打完可按空白或點下一格繼續</span></div>
     <div class="err-msg" id="err-bday-wish">請輸入 10~12 個字</div>
   </div>
 
@@ -1104,7 +1109,8 @@ function buildCharGrid(gridId) {
     // IME 組字狀態（韓文 ㅅ + ㅏ = 사 需要多次按鍵）
     input.composing = false;
 
-    const spill = () => {
+    // 把超過一個字的部分往後面格子塞，回傳溢出數量
+    const overflowChars = () => {
       const chars = Array.from(input.value);
       if(chars.length > 1) {
         const overflow = chars.slice(1);
@@ -1112,24 +1118,39 @@ function buildCharGrid(gridId) {
         for(let j = 0; j < overflow.length && i + 1 + j < TOTAL; j++) {
           grid.children[i + 1 + j].value = overflow[j];
         }
+        return overflow.length;
       }
-      if(input.value && i < TOTAL - 1) grid.children[i + 1].focus();
-      updateCharCount(gridId);
-      clearGridErr(gridId);
-      updateProgress();
+      return 0;
     };
 
     input.addEventListener('compositionstart', () => { input.composing = true; });
 
     input.addEventListener('compositionend', () => {
       input.composing = false;
-      spill();
+      // 組字完成：若溢出（例如貼上或連打）才跳格，否則停在原地讓使用者繼續
+      const spilled = overflowChars();
+      if(spilled > 0 && i + spilled < TOTAL) {
+        grid.children[Math.min(i + 1 + spilled, TOTAL - 1)].focus();
+      }
+      updateCharCount(gridId);
+      clearGridErr(gridId);
+      updateProgress();
     });
 
     input.addEventListener('input', () => {
-      // 組字中不做任何裁切／跳格，讓 ㅅ 有機會變成 사
       if(input.composing) { updateCharCount(gridId); return; }
-      spill();
+      // 非組字（英數、符號、貼上）：溢出就往後塞並跳格
+      const spilled = overflowChars();
+      if(input.value && i < TOTAL - 1 && spilled > 0) {
+        grid.children[Math.min(i + 1 + spilled, TOTAL - 1)].focus();
+      } else if(input.value && i < TOTAL - 1 && Array.from(input.value).length >= 1) {
+        // 英數單鍵：一個字就跳（英數不需組字）
+        const isASCII = /^[\x00-\x7F]$/.test(input.value);
+        if(isASCII) grid.children[i + 1].focus();
+      }
+      updateCharCount(gridId);
+      clearGridErr(gridId);
+      updateProgress();
     });
 
     input.addEventListener('keydown', e => {
@@ -1142,15 +1163,18 @@ function buildCharGrid(gridId) {
         updateCharCount(gridId);
         updateProgress();
       }
+      // 韓文組完停在原地，按方向鍵或空白手動前進
+      if((e.key === 'ArrowRight' || e.key === ' ') && input.value && i < TOTAL - 1) {
+        if(e.key === ' ') e.preventDefault();
+        grid.children[i + 1].focus();
+      }
       if(e.key === 'ArrowLeft' && i > 0) grid.children[i - 1].focus();
-      if(e.key === 'ArrowRight' && i < TOTAL - 1) grid.children[i + 1].focus();
     });
 
     // 失焦時保險：確保只留一個字
     input.addEventListener('blur', () => {
       input.composing = false;
-      const chars = Array.from(input.value);
-      if(chars.length > 1) input.value = chars[0];
+      overflowChars();
       updateCharCount(gridId);
       updateProgress();
     });
