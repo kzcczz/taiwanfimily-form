@@ -311,6 +311,35 @@ body {
 
 .notice-list li:last-child { margin-bottom: 0; }
 
+.notice-terms {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.notice-terms-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: .04em;
+  margin-bottom: 7px;
+}
+
+.notice-terms-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: decimal;
+}
+
+.notice-terms-list li {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #94a3b8;
+  margin-bottom: 5px;
+}
+
+.notice-terms-list li:last-child { margin-bottom: 0; }
+
 .notice-list strong {
   color: #1e293b;
   font-weight: 600;
@@ -347,6 +376,25 @@ body {
 .char-box.optional { border-style: dashed; background: #fafafa; }
 
 .char-grid.error .char-box { border-color: #dc2626; }
+
+.second-entry {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #eef0f2;
+}
+
+.second-entry-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.second-entry-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #5B9BD5;
+}
 
 .char-hint {
   color: #9ca3af;
@@ -451,6 +499,50 @@ body {
   border-radius: 4px;
   font-weight: 500;
   letter-spacing: 0;
+}
+
+.fl-intro {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.fl-intro-svg {
+  flex-shrink: 0;
+  width: 62px;
+}
+
+.fl-intro-svg svg { width: 100%; height: auto; display: block; }
+
+.fl-intro-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.fl-intro-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #6d28d9;
+  margin-bottom: 4px;
+}
+
+.fl-intro-note {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+@media (max-width: 480px) {
+  .fl-intro { gap: 12px; padding: 12px; }
+  .fl-intro-svg { width: 52px; }
+  .fl-intro-text { font-size: 12.5px; }
 }
 
 .eg-tabs {
@@ -890,6 +982,15 @@ input[type="range"]::-webkit-slider-thumb {
       未填完整將無法送出。
     </li>
   </ol>
+
+  <div class="notice-terms">
+    <div class="notice-terms-title">投稿授權與權益聲明</div>
+    <ol class="notice-terms-list">
+      <li>投稿之應援內容，即視為同意授權本應援團隊於相關應援活動中使用。</li>
+      <li>本應援若因不可歸責於本團隊之情事而有變更之必要，本團隊得修改、變更或暫停全部或一部分之活動內容。</li>
+      <li>其他未盡事宜，以本應援團隊之公告為準，本團隊並保有最終解釋之權利。</li>
+    </ol>
+  </div>
 </div>
 
 <!-- PLAN -->
@@ -927,6 +1028,25 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 </div>
 
+<!-- Q0: 個人資料 -->
+<div class="q-card">
+  <div class="q-num">00 · 基本資料</div>
+  <div class="q-desc" style="margin-bottom:14px;">
+    方便我們在需要時聯繫你（例如投稿內容需確認）。信箱不會公開。
+  </div>
+
+  <label class="trans-label" for="nickname">暱稱 <span style="color:#94a3b8;font-weight:400;">（請勿填本名）</span></label>
+  <input type="text" class="trans-input" id="nickname"
+         placeholder="你希望我們怎麼稱呼你（請勿填本名）" maxlength="30" autocomplete="off">
+  <div class="err-msg" id="err-nickname">請填寫暱稱</div>
+
+  <label class="trans-label" for="email" style="margin-top:14px;">信箱</label>
+  <input type="email" class="trans-input" id="email"
+         placeholder="example@email.com" maxlength="80" autocomplete="off"
+         inputmode="email">
+  <div class="err-msg" id="err-email">請填寫正確的信箱格式</div>
+</div>
+
 <!-- Q1: 排字應援募集 -->
 <div class="q-card">
   <div class="q-num" style="color:#5B9BD5;">01 · 排字應援</div>
@@ -957,6 +1077,30 @@ input[type="range"]::-webkit-slider-thumb {
     <input type="text" class="trans-input" id="crowdfund-reason"
            placeholder="想傳達什麼心情？若引用自其他場次請說明出處" maxlength="80" autocomplete="off">
     <div class="err-msg" id="err-crowdfund-reason">請說明想表達的意思</div>
+  </div>
+
+  <div class="second-entry">
+    <div class="second-entry-head">
+      <span class="second-entry-title">第二組提案</span>
+      <span class="opt">選填</span>
+    </div>
+    <div class="q-desc" style="margin-bottom:10px;">如果有第二個想法，可以一起投稿。不需要的話留空即可。</div>
+
+    <div class="char-grid" id="char-grid-2"></div>
+    <div class="char-count"><span id="char-count-2-num">0</span> / 12 字<span class="char-hint">　韓文打完可按空白或點下一格繼續</span></div>
+    <div class="err-msg" id="err-crowdfund-wish-2">排字需 10~12 個字</div>
+
+    <div class="trans-row">
+      <label class="trans-label" for="crowdfund-trans-2">中文翻譯</label>
+      <input type="text" class="trans-input" id="crowdfund-trans-2"
+             placeholder="請說明上面內容的中文意思" maxlength="60" autocomplete="off">
+      <div class="err-msg" id="err-crowdfund-trans-2">請填寫中文翻譯</div>
+
+      <label class="trans-label" for="crowdfund-reason-2" style="margin-top:12px;">想表達的意思</label>
+      <input type="text" class="trans-input" id="crowdfund-reason-2"
+             placeholder="想傳達什麼心情？若引用自其他場次請說明出處" maxlength="80" autocomplete="off">
+      <div class="err-msg" id="err-crowdfund-reason-2">請說明想表達的意思</div>
+    </div>
   </div>
 </div>
 
@@ -1037,6 +1181,37 @@ input[type="range"]::-webkit-slider-thumb {
     下方是幾個常見做法的示意，點按鈕可以切換參考。
   </div>
 
+  <div class="fl-intro">
+    <div class="fl-intro-svg">
+      <svg viewBox="0 0 120 150" role="img" aria-label="手指燈示意圖">
+        <!-- 手指 -->
+        <rect x="44" y="70" width="32" height="76" rx="15" fill="#f1d3b8"/>
+        <rect x="44" y="70" width="32" height="30" rx="14" fill="#e8c3a3"/>
+        <!-- 燈套本體 -->
+        <rect x="40" y="34" width="40" height="46" rx="9" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
+        <rect x="44" y="40" width="32" height="20" rx="5" fill="#f8fafc"/>
+        <!-- 發光燈頭 -->
+        <ellipse cx="60" cy="26" rx="17" ry="15" fill="#7dd3fc"/>
+        <ellipse cx="60" cy="26" rx="17" ry="15" fill="url(#glow)"/>
+        <circle cx="60" cy="24" r="7" fill="#fff" opacity="0.85"/>
+        <!-- 光暈 -->
+        <circle cx="60" cy="26" r="26" fill="#7dd3fc" opacity="0.18"/>
+        <circle cx="60" cy="26" r="34" fill="#7dd3fc" opacity="0.10"/>
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="fl-intro-text">
+      <div class="fl-intro-title">什麼是手指燈？</div>
+      套在手指上的小 LED 燈套，開關一按就發光。演唱會現場會發給大家，全場一起舉起手就能拼出燈海。
+      <span class="fl-intro-note">每顆燈的顏色是固定的，發下去是什麼色就是什麼色，中途無法換色。</span>
+    </div>
+  </div>
+
   <div class="eg-tabs" id="light-tabs">
     <button type="button" class="eg-tab is-on" data-eg="彩虹">彩虹漸層</button>
     <button type="button" class="eg-tab" data-eg="圖案排列">圖案排列</button>
@@ -1089,6 +1264,7 @@ const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
 // CHAR GRID
 const GRIDS = {
   'char-grid':   { total: 12, required: 10, countEl: 'char-count-num',   errEl: 'err-crowdfund-wish' },
+  'char-grid-2': { total: 12, required: 10, countEl: 'char-count-2-num', errEl: 'err-crowdfund-wish-2' },
   'bday-grid':   { total: 12, required: 10, countEl: 'bday-count-num',   errEl: 'err-bday-wish' }
 };
 
@@ -1316,12 +1492,13 @@ Object.keys(GRIDS).forEach(id => { buildCharGrid(id); updateCharCount(id); });
 function updateProgress() {
   const v = id => document.getElementById(id).value.trim() ? 1 : 0;
   const done =
-      (getCharCount('char-grid')   >= 10 ? 1 : 0) + v('crowdfund-trans') + v('crowdfund-reason')
+      v('nickname') + v('email')
+    + (getCharCount('char-grid')   >= 10 ? 1 : 0) + v('crowdfund-trans') + v('crowdfund-reason')
     + v('banner-wish') + v('banner-trans')    + v('banner-reason')
     + (getCharCount('bday-grid')   >= 10 ? 1 : 0)
     + v('bday-banner') + v('bday-trans')      + v('bday-reason')
     + v('light-idea');
-  const pct = Math.round((done / 11) * 100);
+  const pct = Math.round((done / 13) * 100);
   document.getElementById('progress').style.width = pct + '%';
 }
 
@@ -1334,10 +1511,14 @@ document.getElementById('bday-trans').addEventListener('input', updateProgress);
 document.getElementById('bday-reason').addEventListener('input', updateProgress);
 document.getElementById('banner-wish').addEventListener('input', updateProgress);
 document.getElementById('bday-banner').addEventListener('input', updateProgress);
+document.getElementById('nickname').addEventListener('input', updateProgress);
+document.getElementById('email').addEventListener('input', updateProgress);
+document.getElementById('crowdfund-trans-2').addEventListener('input', updateProgress);
+document.getElementById('crowdfund-reason-2').addEventListener('input', updateProgress);
 document.getElementById('light-idea').addEventListener('input', updateProgress);
 updateProgress();
 
-['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea','banner-wish','bday-banner'].forEach(id => {
+['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea','banner-wish','bday-banner','nickname','email','crowdfund-trans-2','crowdfund-reason-2'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => clearErr(id));
 });
 
@@ -1359,7 +1540,26 @@ function validateForm() {
   let ok = true;
   let firstBad = null;
 
-  ['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea','banner-wish','bday-banner'].forEach(id => clearErr(id));
+  ['feedback','crowdfund-trans','banner-trans','bday-trans','crowdfund-reason','banner-reason','bday-reason','light-idea','banner-wish','bday-banner','nickname','email','crowdfund-trans-2','crowdfund-reason-2'].forEach(id => clearErr(id));
+
+  const nick = document.getElementById('nickname').value.trim();
+  if(!nick) {
+    showErr('nickname', '請填寫暱稱');
+    ok = false;
+    firstBad = firstBad || 'nickname';
+  }
+
+  const email = document.getElementById('email').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if(!email) {
+    showErr('email', '請填寫信箱');
+    ok = false;
+    firstBad = firstBad || 'email';
+  } else if(!emailOk) {
+    showErr('email', '信箱格式不正確');
+    ok = false;
+    firstBad = firstBad || 'email';
+  }
 
   ['char-grid','bday-grid'].forEach(gid => {
     const g = document.getElementById(gid);
@@ -1387,6 +1587,38 @@ function validateForm() {
     ok = false;
     firstBad = firstBad || 'crowdfund-reason';
   }
+
+  // 第二組排字（選填）：有填任何一項就三項都要完整
+  (function(){
+    const g2 = document.getElementById('char-grid-2');
+    const e2 = document.getElementById('err-crowdfund-wish-2');
+    const filled2 = getCharCount('char-grid-2');
+    const trans2 = document.getElementById('crowdfund-trans-2').value.trim();
+    const reason2 = document.getElementById('crowdfund-reason-2').value.trim();
+    g2.classList.remove('error');
+    e2.classList.remove('show');
+
+    const anyFilled = filled2 > 0 || trans2 || reason2;
+    if(!anyFilled) return;  // 完全沒填，跳過
+
+    if(filled2 < 10) {
+      g2.classList.add('error');
+      e2.textContent = '前 10 格為必填（目前 ' + filled2 + ' 字）';
+      e2.classList.add('show');
+      ok = false;
+      firstBad = firstBad || 'char-grid-2';
+    }
+    if(!trans2) {
+      showErr('crowdfund-trans-2', '請填寫中文翻譯');
+      ok = false;
+      firstBad = firstBad || 'crowdfund-trans-2';
+    }
+    if(!reason2) {
+      showErr('crowdfund-reason-2', '請說明想表達的意思');
+      ok = false;
+      firstBad = firstBad || 'crowdfund-reason-2';
+    }
+  })();
 
   if(!document.getElementById('banner-wish').value.trim()) {
     showErr('banner-wish', '此題為必填');
@@ -1444,11 +1676,16 @@ async function submitSurvey() {
   btn.textContent = '送出中…';
 
   const data = {
+    nickname: document.getElementById('nickname').value.trim() || null,
+    email: document.getElementById('email').value.trim() || null,
     crowdfund_wish: getCharText('char-grid').trim() || null,
     crowdfund_trans: document.getElementById('crowdfund-trans').value.trim() || null,
     banner_wish: document.getElementById('banner-wish').value.trim() || null,
     banner_trans: document.getElementById('banner-trans').value.trim() || null,
     crowdfund_reason: document.getElementById('crowdfund-reason').value.trim() || null,
+    crowdfund_wish_2: getCharText('char-grid-2').trim() || null,
+    crowdfund_trans_2: document.getElementById('crowdfund-trans-2').value.trim() || null,
+    crowdfund_reason_2: document.getElementById('crowdfund-reason-2').value.trim() || null,
     banner_reason: document.getElementById('banner-reason').value.trim() || null,
     bday_wish: getCharText('bday-grid').trim() || null,
     bday_banner: document.getElementById('bday-banner').value.trim() || null,
