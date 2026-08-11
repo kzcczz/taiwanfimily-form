@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>應援企劃投票 — TAIWAN FIMILY</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #f5f6f8;
+      color: #111827;
+      min-height: 100vh;
+      padding-bottom: 4rem;
+    }
+
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-title { font-size: 14px; color: #6b7280; }
+
+    .main { max-width: 640px; margin: 0 auto; padding: 2rem 1.25rem; }
+
+    .hero {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag {
+      display: inline-block;
+      padding: 3px 12px;
+      background: #eff6ff;
+      color: #7BA6DE;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .hero-title { font-size: 22px; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
+    .hero-desc { font-size: 14px; line-height: 1.75; color: #6b7280; }
+
+    .vote-section {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .vote-head { margin-bottom: 1.25rem; }
+    .vote-num {
+      font-size: 13px;
+      font-weight: 600;
+      color: #5B9BD5;
+      margin-bottom: 4px;
+    }
+    .vote-title { font-size: 17px; font-weight: 700; }
+    .vote-sub { font-size: 13px; color: #6b7280; margin-top: 4px; }
+
+    .cand {
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      position: relative;
+    }
+    .cand:hover { border-color: #c4d9f0; }
+    .cand.selected { border-color: #5B9BD5; background: #f5f9fd; }
+
+    .cand-radio {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      transition: all .15s;
+    }
+    .cand.selected .cand-radio {
+      border-color: #5B9BD5;
+      background: #5B9BD5;
+      box-shadow: inset 0 0 0 3px #fff;
+    }
+
+    .cand-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .cand-part { margin-bottom: 12px; }
+    .cand-part:last-child { margin-bottom: 0; }
+    .cand-part-tag {
+      font-size: 11.5px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .cand-part-tag.zi { color: #5B9BD5; }
+    .cand-part-tag.banner { color: #059669; }
+
+    .cand-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: #111827;
+      word-break: break-word;
+    }
+    .cand-meta { font-size: 12.5px; color: #6b7280; margin-top: 4px; line-height: 1.6; }
+    .cand-meta b { color: #475569; font-weight: 500; }
+
+    .vote-loading, .vote-empty {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 13px;
+      padding: 20px 0;
+    }
+
+    /* RESULT BARS */
+    .result-bar-wrap { margin-bottom: 12px; }
+    .result-bar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+    .result-bar-name { font-size: 13px; font-weight: 500; }
+    .result-bar-name.mine { color: #5B9BD5; }
+    .result-bar-stat { font-size: 12px; color: #6b7280; }
+    .result-track { height: 8px; background: #f1f5f9; border-radius: 5px; overflow: hidden; }
+    .result-fill { height: 100%; background: #5B9BD5; border-radius: 5px; transition: width .5s ease; }
+
+    .submit-wrap { text-align: center; margin-top: 1.5rem; }
+    .submit-btn {
+      width: 100%;
+      max-width: 320px;
+      padding: 15px 24px;
+      background: #5B9BD5;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .15s;
+      box-shadow: 0 4px 14px rgba(91,155,213,.3);
+    }
+    .submit-btn:hover:not(:disabled) { background: #4a8ac9; }
+    .submit-btn:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+    .submit-note { font-size: 12px; color: #9ca3af; margin-top: 10px; }
+
+    .done-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .done-banner-title { font-size: 15px; font-weight: 600; color: #15803d; margin-bottom: 3px; }
+    .done-banner-sub { font-size: 13px; color: #16a34a; }
+
+    .err-line {
+      display: none;
+      text-align: center;
+      color: #dc2626;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .err-line.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-title">應援企劃投票</div>
+  </div>
+
+  <div class="main">
+    <div class="hero">
+      <div class="hero-tag">TAIWAN FIMILY · 應援企劃</div>
+      <div class="hero-title">LE SSERAFIM 應援企劃投票</div>
+      <div class="hero-desc" id="hero-desc">
+        感謝大家的投稿！我們從中挑選了幾組候選，現在邀請你一起選出最喜歡的方向。<br>
+        每個項目各選一組，投票結果將作為向經紀公司提案的依據。
+      </div>
+    </div>
+
+    <div id="done-banner" class="done-banner" style="display:none;">
+      <div class="done-banner-title">✓ 你已完成投票</div>
+      <div class="done-banner-sub">感謝你的參與！以下是目前的即時票數。</div>
+    </div>
+
+    <!-- 投票一：一般版 -->
+    <div class="vote-section">
+      <div class="vote-head">
+        <div class="vote-num">投票一</div>
+        <div class="vote-title">一般版・排字 + 手幅</div>
+        <div class="vote-sub">選出你最希望的一組（兩天場次皆使用）</div>
+      </div>
+      <div id="group-general"><div class="vote-loading">載入中…</div></div>
+    </div>
+
+    <!-- 投票二：生日版 -->
+    <div class="vote-section">
+      <div class="vote-head">
+        <div class="vote-num">投票二</div>
+        <div class="vote-title">恩採生日版・排字 + 手幅</div>
+        <div class="vote-sub">選出你最希望的一組（第一天 11/14 慶生應援）</div>
+      </div>
+      <div id="group-birthday"><div class="vote-loading">載入中…</div></div>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submit-btn" onclick="submitVote()">送出投票</button>
+      <div class="err-line" id="err-line">請兩個項目都選擇一組再送出</div>
+      <div class="submit-note">一台裝置僅能投票一次</div>
+    </div>
+  </div>
+
+<script>
+const SUPABASE_URL = 'https://gexcoudliocybhmlziss.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
+const STORAGE_KEY = 'tf_voted_pureflow';
+
+let candidates = { general: [], birthday: [] };
+let selected = { general: null, birthday: null };
+let hasVoted = false;
+
+function esc(str) {
+  return String(str == null ? '' : str).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function sbGet(path) {
+  const r = await fetch(SUPABASE_URL + path, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+  });
+  if (!r.ok) throw new Error('load failed');
+  return r.json();
+}
+
+async function loadCandidates() {
+  const rows = await sbGet('/rest/v1/vote_candidates?select=*&order=sort_order.asc');
+  candidates.general = rows.filter(r => r.category === 'general');
+  candidates.birthday = rows.filter(r => r.category === 'birthday');
+}
+
+// 已投票的話，順便抓票數
+async function loadTallies() {
+  const rows = await sbGet('/rest/v1/votes?select=general_id,birthday_id');
+  const tally = {};
+  rows.forEach(v => {
+    if (v.general_id) tally[v.general_id] = (tally[v.general_id] || 0) + 1;
+    if (v.birthday_id) tally[v.birthday_id] = (tally[v.birthday_id] || 0) + 1;
+  });
+  return { tally, total: rows.length };
+}
+
+function candCard(c, cat) {
+  const parts = [];
+  if (c.zi_text) {
+    parts.push(
+      '<div class="cand-part">'
+      + '<div class="cand-part-tag zi">排字</div>'
+      + '<div class="cand-text">' + esc(c.zi_text) + '</div>'
+      + (c.zi_trans ? '<div class="cand-meta"><b>中譯：</b>' + esc(c.zi_trans) + '</div>' : '')
+      + (c.zi_reason ? '<div class="cand-meta"><b>理念：</b>' + esc(c.zi_reason) + '</div>' : '')
+      + '</div>');
+  }
+  if (c.banner_text) {
+    parts.push(
+      '<div class="cand-part">'
+      + '<div class="cand-part-tag banner">手幅</div>'
+      + '<div class="cand-text">' + esc(c.banner_text) + '</div>'
+      + (c.banner_trans ? '<div class="cand-meta"><b>中譯：</b>' + esc(c.banner_trans) + '</div>' : '')
+      + (c.banner_reason ? '<div class="cand-meta"><b>理念：</b>' + esc(c.banner_reason) + '</div>' : '')
+      + '</div>');
+  }
+  return '<div class="cand" data-cat="' + cat + '" data-id="' + c.id + '" onclick="pick(\'' + cat + '\',' + c.id + ')">'
+    + '<div class="cand-radio"></div>'
+    + '<div class="cand-label">' + esc(c.label || ('候選 ' + c.id)) + '</div>'
+    + parts.join('')
+    + '</div>';
+}
+
+function renderVoting() {
+  ['general', 'birthday'].forEach(cat => {
+    const box = document.getElementById(cat === 'general' ? 'group-general' : 'group-birthday');
+    const list = candidates[cat];
+    box.innerHTML = list.length
+      ? list.map(c => candCard(c, cat)).join('')
+      : '<div class="vote-empty">尚未開放候選項目</div>';
+  });
+}
+
+function pick(cat, id) {
+  if (hasVoted) return;
+  selected[cat] = id;
+  document.querySelectorAll('.cand[data-cat="' + cat + '"]').forEach(el => {
+    el.classList.toggle('selected', Number(el.dataset.id) === id);
+  });
+  document.getElementById('err-line').classList.remove('show');
+}
+
+function renderResults(tally, total, mine) {
+  ['general', 'birthday'].forEach(cat => {
+    const box = document.getElementById(cat === 'general' ? 'group-general' : 'group-birthday');
+    const list = candidates[cat].slice().sort((a, b) => (tally[b.id] || 0) - (tally[a.id] || 0));
+    box.innerHTML = list.map(c => {
+      const n = tally[c.id] || 0;
+      const pct = total ? Math.round(n / total * 100) : 0;
+      const isMine = mine && mine[cat] === c.id;
+      return '<div class="result-bar-wrap">'
+        + '<div class="result-bar-top">'
+        + '<span class="result-bar-name' + (isMine ? ' mine' : '') + '">' + esc(c.label || ('候選 ' + c.id)) + (isMine ? '（你的選擇）' : '') + '</span>'
+        + '<span class="result-bar-stat">' + n + ' 票 · ' + pct + '%</span>'
+        + '</div>'
+        + '<div class="result-track"><div class="result-fill" style="width:' + pct + '%"></div></div>'
+        + '</div>';
+    }).join('');
+  });
+}
+
+async function submitVote() {
+  if (hasVoted) return;
+  if (!selected.general || !selected.birthday) {
+    document.getElementById('err-line').classList.add('show');
+    return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '送出中…';
+
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/votes', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        general_id: selected.general,
+        birthday_id: selected.birthday,
+        voted_at: new Date().toISOString()
+      })
+    });
+    if (!r.ok) throw new Error('submit failed');
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      general: selected.general, birthday: selected.birthday, at: Date.now()
+    }));
+    hasVoted = true;
+    await showResults(selected);
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '送出投票';
+    const el = document.getElementById('err-line');
+    el.textContent = '送出失敗，請稍後再試';
+    el.classList.add('show');
+  }
+}
+
+async function showResults(mine) {
+  document.getElementById('done-banner').style.display = 'block';
+  document.querySelector('.submit-wrap').style.display = 'none';
+  document.getElementById('hero-desc').innerHTML =
+    '投票已完成，以下是目前各組的即時得票狀況。';
+  const { tally, total } = await loadTallies();
+  renderResults(tally, total, mine);
+}
+
+async function init() {
+  try {
+    await loadCandidates();
+  } catch (e) {
+    document.getElementById('group-general').innerHTML = '<div class="vote-empty">載入失敗，請重新整理</div>';
+    document.getElementById('group-birthday').innerHTML = '';
+    return;
+  }
+
+  let stored = null;
+  try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) {}
+
+  if (stored) {
+    hasVoted = true;
+    renderVoting();
+    await showResults(stored);
+  } else {
+    renderVoting();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
