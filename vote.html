@@ -90,10 +90,27 @@
       border: 2px solid #cbd5e1;
       transition: all .15s;
     }
+    .cand-radio::after { box-sizing: border-box; }
     .cand.selected .cand-radio {
       border-color: #5B9BD5;
       background: #5B9BD5;
       box-shadow: inset 0 0 0 3px #fff;
+    }
+
+    /* 一般版為複選，用方形 */
+    .cand[data-cat="general"] .cand-radio { border-radius: 6px; }
+    .cand[data-cat="general"].selected .cand-radio {
+      box-shadow: none;
+      background: #5B9BD5;
+    }
+    .cand[data-cat="general"].selected .cand-radio::after {
+      content: "";
+      position: absolute;
+      left: 6px; top: 2px;
+      width: 5px; height: 10px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
     }
 
     .cand-label {
@@ -199,7 +216,7 @@
       <div class="hero-title">LE SSERAFIM 應援企劃投票</div>
       <div class="hero-desc" id="hero-desc">
         感謝大家的投稿！我們從中挑選了幾組候選，現在邀請你一起選出最喜歡的方向。<br>
-        每個項目各選一組，投票結果將作為向經紀公司提案的依據。
+        一般版請選兩組（兩天演唱會各一組）、生日版選一組，投票結果將作為向經紀公司提案的依據。
       </div>
     </div>
 
@@ -213,7 +230,7 @@
       <div class="vote-head">
         <div class="vote-num">投票一</div>
         <div class="vote-title">一般版・排字 + 手幅</div>
-        <div class="vote-sub">選出你最希望的一組（兩天場次皆使用）</div>
+        <div class="vote-sub">選出你最希望的兩組（兩天演唱會各用一組）<span id="gen-count" style="color:#5B9BD5;font-weight:600;"> · 已選 0/2</span></div>
       </div>
       <div id="group-general"><div class="vote-loading">載入中…</div></div>
     </div>
@@ -230,7 +247,7 @@
 
     <div class="submit-wrap">
       <button class="submit-btn" id="submit-btn" onclick="submitVote()">送出投票</button>
-      <div class="err-line" id="err-line">請兩個項目都選擇一組再送出</div>
+      <div class="err-line" id="err-line">請選滿一般版兩組、生日版一組再送出</div>
       <div class="submit-note">一台裝置僅能投票一次</div>
     </div>
   </div>
@@ -241,7 +258,7 @@ const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
 const STORAGE_KEY = 'tf_voted_pureflow';
 
 let candidates = { general: [], birthday: [] };
-let selected = { general: null, birthday: null };
+let selected = { general: [], birthday: null };
 let hasVoted = false;
 
 function esc(str) {
@@ -265,10 +282,11 @@ async function loadCandidates() {
 
 // 已投票的話，順便抓票數
 async function loadTallies() {
-  const rows = await sbGet('/rest/v1/votes?select=general_id,birthday_id');
+  const rows = await sbGet('/rest/v1/votes?select=general_id_1,general_id_2,birthday_id');
   const tally = {};
   rows.forEach(v => {
-    if (v.general_id) tally[v.general_id] = (tally[v.general_id] || 0) + 1;
+    if (v.general_id_1) tally[v.general_id_1] = (tally[v.general_id_1] || 0) + 1;
+    if (v.general_id_2) tally[v.general_id_2] = (tally[v.general_id_2] || 0) + 1;
     if (v.birthday_id) tally[v.birthday_id] = (tally[v.birthday_id] || 0) + 1;
   });
   return { tally, total: rows.length };
@@ -313,11 +331,35 @@ function renderVoting() {
 
 function pick(cat, id) {
   if (hasVoted) return;
-  selected[cat] = id;
+
+  if (cat === 'general') {
+    const arr = selected.general;
+    const idx = arr.indexOf(id);
+    if (idx >= 0) {
+      arr.splice(idx, 1);              // 再點一次取消
+    } else if (arr.length < 2) {
+      arr.push(id);                    // 未滿兩組才能加
+    } else {
+      // 已選兩組，提示
+      const el = document.getElementById('err-line');
+      el.textContent = '一般版最多只能選兩組，請先取消一組再選';
+      el.classList.add('show');
+      return;
+    }
+  } else {
+    selected.birthday = (selected.birthday === id) ? null : id;
+  }
+
+  // 更新畫面選取狀態
   document.querySelectorAll('.cand[data-cat="' + cat + '"]').forEach(el => {
-    el.classList.toggle('selected', Number(el.dataset.id) === id);
+    const cid = Number(el.dataset.id);
+    const on = cat === 'general' ? selected.general.includes(cid) : selected.birthday === cid;
+    el.classList.toggle('selected', on);
   });
   document.getElementById('err-line').classList.remove('show');
+  document.getElementById('err-line').textContent = '請選滿一般版兩組、生日版一組再送出';
+  const gc = document.getElementById('gen-count');
+  if (gc) gc.textContent = ' · 已選 ' + selected.general.length + '/2';
 }
 
 function renderResults(tally, total, mine) {
@@ -327,7 +369,9 @@ function renderResults(tally, total, mine) {
     box.innerHTML = list.map(c => {
       const n = tally[c.id] || 0;
       const pct = total ? Math.round(n / total * 100) : 0;
-      const isMine = mine && mine[cat] === c.id;
+      const isMine = mine && (cat === 'general'
+        ? (Array.isArray(mine.general) && mine.general.includes(c.id))
+        : mine.birthday === c.id);
       return '<div class="result-bar-wrap">'
         + '<div class="result-bar-top">'
         + '<span class="result-bar-name' + (isMine ? ' mine' : '') + '">' + esc(c.label || ('候選 ' + c.id)) + (isMine ? '（你的選擇）' : '') + '</span>'
@@ -341,8 +385,10 @@ function renderResults(tally, total, mine) {
 
 async function submitVote() {
   if (hasVoted) return;
-  if (!selected.general || !selected.birthday) {
-    document.getElementById('err-line').classList.add('show');
+  if (selected.general.length !== 2 || !selected.birthday) {
+    const el = document.getElementById('err-line');
+    el.textContent = '請選滿一般版兩組、生日版一組再送出';
+    el.classList.add('show');
     return;
   }
   const btn = document.getElementById('submit-btn');
@@ -358,7 +404,8 @@ async function submitVote() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        general_id: selected.general,
+        general_id_1: selected.general[0],
+        general_id_2: selected.general[1],
         birthday_id: selected.birthday,
         voted_at: new Date().toISOString()
       })
@@ -366,7 +413,7 @@ async function submitVote() {
     if (!r.ok) throw new Error('submit failed');
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      general: selected.general, birthday: selected.birthday, at: Date.now()
+      general: selected.general.slice(), birthday: selected.birthday, at: Date.now()
     }));
     hasVoted = true;
     await showResults(selected);
