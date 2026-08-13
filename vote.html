@@ -215,7 +215,8 @@
       <div class="hero-tag">TAIWAN FIMILY · 應援企劃</div>
       <div class="hero-title">LE SSERAFIM 應援企劃投票</div>
       <div class="hero-desc" id="hero-desc">
-        感謝大家的投稿！我們從中挑選了幾組候選，現在邀請你一起選出最喜歡的方向。<br>
+        感謝大家的投稿！<br>
+        我們從中挑選了幾組候選，現在邀請你一起選出最喜歡的方向。<br>
         一般版請選兩組（兩天演唱會各一組）、生日版選一組，投票結果將作為向經紀公司提案的依據。
       </div>
     </div>
@@ -300,7 +301,6 @@ function candCard(c, cat) {
       + '<div class="cand-part-tag zi">排字</div>'
       + '<div class="cand-text">' + esc(c.zi_text) + '</div>'
       + (c.zi_trans ? '<div class="cand-meta"><b>中譯：</b>' + esc(c.zi_trans) + '</div>' : '')
-      + (c.zi_reason ? '<div class="cand-meta"><b>理念：</b>' + esc(c.zi_reason) + '</div>' : '')
       + '</div>');
   }
   if (c.banner_text) {
@@ -309,7 +309,6 @@ function candCard(c, cat) {
       + '<div class="cand-part-tag banner">手幅</div>'
       + '<div class="cand-text">' + esc(c.banner_text) + '</div>'
       + (c.banner_trans ? '<div class="cand-meta"><b>中譯：</b>' + esc(c.banner_trans) + '</div>' : '')
-      + (c.banner_reason ? '<div class="cand-meta"><b>理念：</b>' + esc(c.banner_reason) + '</div>' : '')
       + '</div>');
   }
   return '<div class="cand" data-cat="' + cat + '" data-id="' + c.id + '" onclick="pick(\'' + cat + '\',' + c.id + ')">'
