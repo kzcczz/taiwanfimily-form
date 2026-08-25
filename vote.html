@@ -127,21 +127,28 @@
     .cand-part { margin-bottom: 12px; }
     .cand-part:last-child { margin-bottom: 0; }
     .cand-part-tag {
-      font-size: 11.5px;
+      font-size: 13.5px;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     .cand-part-tag.zi { color: #5B9BD5; }
     .cand-part-tag.banner { color: #059669; }
 
-    .cand-text {
-      font-size: 15px;
-      font-weight: 500;
-      color: #111827;
-      word-break: break-word;
+    .cand-panel {
+      border-radius: 10px;
+      padding: 14px 16px;
     }
-    .cand-meta { font-size: 12.5px; color: #6b7280; margin-top: 4px; line-height: 1.6; }
-    .cand-meta b { color: #475569; font-weight: 500; }
+    .cand-panel.zi { background: #eef5fc; border: 1px solid #d8e8f7; }
+    .cand-panel.banner { background: #ecf9f2; border: 1px solid #cceee0; }
+
+    .cand-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+    .cand-meta { font-size: 12.5px; color: #64748b; margin-top: 5px; line-height: 1.6; }
 
     .vote-loading, .vote-empty {
       text-align: center;
@@ -299,16 +306,20 @@ function candCard(c, cat) {
     parts.push(
       '<div class="cand-part">'
       + '<div class="cand-part-tag zi">排字</div>'
+      + '<div class="cand-panel zi">'
       + '<div class="cand-text">' + esc(c.zi_text) + '</div>'
-      + (c.zi_trans ? '<div class="cand-meta"><b>中譯：</b>' + esc(c.zi_trans) + '</div>' : '')
+      + (c.zi_trans ? '<div class="cand-meta">' + esc(c.zi_trans) + '</div>' : '')
+      + '</div>'
       + '</div>');
   }
   if (c.banner_text) {
     parts.push(
       '<div class="cand-part">'
       + '<div class="cand-part-tag banner">手幅</div>'
+      + '<div class="cand-panel banner">'
       + '<div class="cand-text">' + esc(c.banner_text) + '</div>'
-      + (c.banner_trans ? '<div class="cand-meta"><b>中譯：</b>' + esc(c.banner_trans) + '</div>' : '')
+      + (c.banner_trans ? '<div class="cand-meta">' + esc(c.banner_trans) + '</div>' : '')
+      + '</div>'
       + '</div>');
   }
   return '<div class="cand" data-cat="' + cat + '" data-id="' + c.id + '" onclick="pick(\'' + cat + '\',' + c.id + ')">'
