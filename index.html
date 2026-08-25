@@ -64,19 +64,19 @@
 
     .links {
       display: flex;
-      flex-direction: column;
       gap: 10px;
     }
 
     .btn {
       display: block;
-      width: 100%;
-      padding: 14px 18px;
+      flex: 1;
+      padding: 14px 12px;
       border-radius: 11px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
+      text-align: center;
       text-decoration: none;
-      transition: transform .12s, box-shadow .12s, background .15s;
+      transition: transform .12s, box-shadow .12s, background .15s, border-color .15s;
     }
 
     .btn-primary {
@@ -90,6 +90,17 @@
       transform: translateY(-1px);
       box-shadow: 0 6px 18px rgba(91, 155, 213, .38);
     }
+
+    .btn-ghost {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #e5e7eb;
+    }
+
+    .btn-ghost:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
   </style>
 </head>
 <body>
@@ -99,7 +110,8 @@
     <p>感謝每一位 FEARNOT 的參與<br>期待你的想法 一起打造最難忘的台北場</p>
 
     <div class="links">
-      <a class="btn btn-primary" href="/survey">填寫應援企劃募集表單</a>
+      <a class="btn btn-primary" href="/vote">前往投票</a>
+      <a class="btn btn-ghost" href="/survey">應援企劃募集</a>
     </div>
   </div>
 </body>
