@@ -287,7 +287,7 @@
 <script>
 const SUPABASE_URL = 'https://gexcoudliocybhmlziss.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
-const STORAGE_KEY = 'tf_voted_pureflow';
+const STORAGE_KEY = 'tf_voted_pureflow_v2';
 
 let candidates = { general: [], birthday: [] };
 let selected = { general: [], birthday: null };
@@ -482,6 +482,8 @@ async function init() {
     document.getElementById('group-birthday').innerHTML = '';
     return;
   }
+
+  try { localStorage.removeItem('tf_voted_pureflow'); } catch (e) {}
 
   let stored = null;
   try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) {}
