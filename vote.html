@@ -176,6 +176,23 @@
     .result-bar-stat { font-size: 12px; color: #6b7280; }
     .result-track { height: 8px; background: #f1f5f9; border-radius: 5px; overflow: hidden; }
     .result-fill { height: 100%; background: #5B9BD5; border-radius: 5px; transition: width .5s ease; }
+    .result-detail {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.7;
+      word-break: break-word;
+    }
+    .result-detail-tag {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    .result-detail-tag.zi { color: #2f7bc4; background: #eef5fc; }
+    .result-detail-tag.banner { color: #1f9e75; background: #ecf9f2; }
 
     .submit-wrap { text-align: center; margin-top: 1.5rem; }
     .submit-btn {
@@ -395,6 +412,11 @@ function renderResults(tally, total, mine) {
         + '<span class="result-bar-stat">' + n + ' 票 · ' + pct + '%</span>'
         + '</div>'
         + '<div class="result-track"><div class="result-fill" style="width:' + pct + '%"></div></div>'
+        + '<div class="result-detail">'
+        + (c.zi_text ? '<span class="result-detail-tag zi">排字</span>' + esc(c.zi_text) : '')
+        + (c.zi_text && c.banner_text ? '<br>' : '')
+        + (c.banner_text ? '<span class="result-detail-tag banner">手幅</span>' + esc(c.banner_text) : '')
+        + '</div>'
         + '</div>';
     }).join('');
   });
