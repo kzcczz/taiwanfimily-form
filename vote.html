@@ -312,16 +312,37 @@ async function loadCandidates() {
   candidates.birthday = rows.filter(r => r.category === 'birthday');
 }
 
-// 已投票的話，順便抓票數
+// 已投票的話，順便抓票數（分頁抓取，突破 Supabase 單次 1000 筆上限）
 async function loadTallies() {
-  const rows = await sbGet('/rest/v1/votes?select=general_id_1,general_id_2,birthday_id');
   const tally = {};
-  rows.forEach(v => {
-    if (v.general_id_1) tally[v.general_id_1] = (tally[v.general_id_1] || 0) + 1;
-    if (v.general_id_2) tally[v.general_id_2] = (tally[v.general_id_2] || 0) + 1;
-    if (v.birthday_id) tally[v.birthday_id] = (tally[v.birthday_id] || 0) + 1;
-  });
-  return { tally, total: rows.length };
+  let total = 0;
+  const PAGE = 1000;
+  let from = 0;
+
+  while (true) {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/votes?select=general_id_1,general_id_2,birthday_id', {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Range-Unit': 'items',
+        'Range': from + '-' + (from + PAGE - 1)
+      }
+    });
+    if (!r.ok) throw new Error('load failed');
+    const rows = await r.json();
+
+    rows.forEach(v => {
+      if (v.general_id_1) tally[v.general_id_1] = (tally[v.general_id_1] || 0) + 1;
+      if (v.general_id_2) tally[v.general_id_2] = (tally[v.general_id_2] || 0) + 1;
+      if (v.birthday_id) tally[v.birthday_id] = (tally[v.birthday_id] || 0) + 1;
+    });
+    total += rows.length;
+
+    if (rows.length < PAGE) break;   // 最後一頁
+    from += PAGE;
+  }
+
+  return { tally, total };
 }
 
 function candCard(c, cat) {
