@@ -289,6 +289,9 @@ const SUPABASE_URL = 'https://gexcoudliocybhmlziss.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__XRn__8TPSQdQYJxmCDl2g_JukRY7DE';
 const STORAGE_KEY = 'tf_voted_pureflow_v2';
 
+// ⬇⬇⬇ 要關閉投票時，把這個改成 true ⬇⬇⬇
+const VOTING_CLOSED = true;
+
 let candidates = { general: [], birthday: [] };
 let selected = { general: [], birthday: null };
 let hasVoted = false;
@@ -501,6 +504,25 @@ async function init() {
   } catch (e) {
     document.getElementById('group-general').innerHTML = '<div class="vote-empty">載入失敗，請重新整理</div>';
     document.getElementById('group-birthday').innerHTML = '';
+    return;
+  }
+
+  // 投票已關閉：顯示結束頁 + 最終結果（唯讀）
+  if (VOTING_CLOSED) {
+    hasVoted = true;
+    document.querySelector('.submit-wrap').style.display = 'none';
+    const gc = document.getElementById('gen-count');
+    if (gc) gc.style.display = 'none';
+    document.getElementById('done-banner').style.display = 'block';
+    document.querySelector('#done-banner .done-banner-title').textContent = '投票已結束';
+    document.querySelector('#done-banner .done-banner-sub').textContent = '感謝大家的參與！以下是最終票數結果。';
+    document.getElementById('hero-desc').innerHTML =
+      '投票已於此階段結束，感謝每一位 FEARNOT 的參與 🤍<br>以下是各組的最終得票結果。';
+    // 讀取自己投過什麼（若有），標記「你的選擇」
+    let mine = null;
+    try { mine = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) {}
+    const { tally, total } = await loadTallies();
+    renderResults(tally, total, mine);
     return;
   }
 
